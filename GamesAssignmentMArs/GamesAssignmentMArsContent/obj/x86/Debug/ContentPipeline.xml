@@ -7,11 +7,11 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Darren\Documents\Visual Studio 2010\Projects\GamesAssignmentMArs\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\cube.xnb</Output>
+      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\cube.xnb</Output>
       <Time>2012-11-20T02:05:16+00:00</Time>
       <Dependency>
         <Key>obj\x86\Debug\cube_0.xml</Key>
-        <Value>2012-11-21T22:46:38.653323+00:00</Value>
+        <Value>2012-11-25T08:57:17.2990306+00:00</Value>
       </Dependency>
     </Item>
     <Item>
@@ -20,11 +20,11 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Darren\Documents\Visual Studio 2010\Projects\GamesAssignmentMArs\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\hollowsphere.xnb</Output>
+      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\hollowsphere.xnb</Output>
       <Time>2012-11-13T09:26:50.1997159+00:00</Time>
       <Dependency>
         <Key>obj\x86\Debug\hollowsphere_0.xml</Key>
-        <Value>2012-11-21T21:52:32.9166775+00:00</Value>
+        <Value>2012-11-25T08:57:17.6680517+00:00</Value>
       </Dependency>
     </Item>
     <Item>
@@ -33,11 +33,11 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Darren\Documents\Visual Studio 2010\Projects\GamesAssignmentMArs\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\oldcube.xnb</Output>
+      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\oldcube.xnb</Output>
       <Time>2012-11-13T09:26:50.2067163+00:00</Time>
       <Dependency>
         <Key>obj\x86\Debug\oldcube_0.xml</Key>
-        <Value>2012-11-21T21:52:33.1246894+00:00</Value>
+        <Value>2012-11-25T08:57:17.9910702+00:00</Value>
       </Dependency>
     </Item>
     <Item>
@@ -46,11 +46,76 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Darren\Documents\Visual Studio 2010\Projects\GamesAssignmentMArs\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\sphere.xnb</Output>
-      <Time>2012-11-13T09:26:50.2147168+00:00</Time>
+      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\sphere.xnb</Output>
+      <Time>2012-11-20T02:05:16+00:00</Time>
       <Dependency>
         <Key>obj\x86\Debug\sphere_0.xml</Key>
-        <Value>2012-11-21T21:52:33.4177061+00:00</Value>
+        <Value>2012-11-25T08:57:18.5141001+00:00</Value>
+      </Dependency>
+    </Item>
+    <Item>
+      <Source>cylinder.fbx</Source>
+      <Name>cylinder</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\cylinder.xnb</Output>
+      <Time>2012-11-23T18:46:26.3423084+00:00</Time>
+      <Dependency>
+        <Key>obj\x86\Debug\cylinder_0.xml</Key>
+        <Value>2012-11-25T08:57:19.3751493+00:00</Value>
+      </Dependency>
+    </Item>
+    <Item>
+      <Source>cylinder2.fbx</Source>
+      <Name>cylinder2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\cylinder2.xnb</Output>
+      <Time>2012-11-23T19:44:23.7102025+00:00</Time>
+      <Dependency>
+        <Key>obj\x86\Debug\cylinder2_0.xml</Key>
+        <Value>2012-11-25T08:57:19.7441704+00:00</Value>
+      </Dependency>
+    </Item>
+    <Item>
+      <Source>wheel.fbx</Source>
+      <Name>wheel</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\wheel.xnb</Output>
+      <Time>2012-11-23T21:52:00.6381537+00:00</Time>
+      <Dependency>
+        <Key>obj\x86\Debug\wheel_0.xml</Key>
+        <Value>2012-11-25T08:57:20.0621886+00:00</Value>
+      </Dependency>
+    </Item>
+    <Item>
+      <Source>cyl.fbx</Source>
+      <Name>cyl</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\cyl.xnb</Output>
+      <Time>2011-11-21T19:33:46+00:00</Time>
+      <Dependency>
+        <Key>obj\x86\Debug\cyl_0.xml</Key>
+        <Value>2012-11-25T08:57:20.3722064+00:00</Value>
+      </Dependency>
+    </Item>
+    <Item>
+      <Source>SphereHighPoly.fbx</Source>
+      <Name>SphereHighPoly</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\SphereHighPoly.xnb</Output>
+      <Time>2012-11-20T02:05:16+00:00</Time>
+      <Dependency>
+        <Key>obj\x86\Debug\SphereHighPoly_0.xml</Key>
+        <Value>2012-11-25T08:57:21.2252551+00:00</Value>
       </Dependency>
     </Item>
     <Item>
@@ -59,7 +124,7 @@
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Darren\Documents\Visual Studio 2010\Projects\GamesAssignmentMArs\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\Verdana.xnb</Output>
+      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\Verdana.xnb</Output>
       <Time>2012-11-13T09:26:50.1877152+00:00</Time>
     </Item>
     <Item>
@@ -68,8 +133,53 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Darren\Documents\Visual Studio 2010\Projects\GamesAssignmentMArs\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\Ground.xnb</Output>
+      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\Ground.xnb</Output>
       <Time>2012-11-13T09:26:50.1787147+00:00</Time>
+    </Item>
+    <Item>
+      <Source>hm1.bmp</Source>
+      <Name>hm1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\hm1.xnb</Output>
+      <Time>2012-11-20T02:05:16+00:00</Time>
+    </Item>
+    <Item>
+      <Source>SkySphereTexture.dds</Source>
+      <Name>SkySphereTexture</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\SkySphereTexture.xnb</Output>
+      <Time>2012-11-20T02:05:16+00:00</Time>
+    </Item>
+    <Item>
+      <Source>mar0kuu2.jpg</Source>
+      <Name>mar0kuu2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\mar0kuu2.xnb</Output>
+      <Time>2012-11-25T09:00:51.8263008+00:00</Time>
+    </Item>
+    <Item>
+      <Source>effects.fx</Source>
+      <Name>effects</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\effects.xnb</Output>
+      <Time>2012-11-20T02:05:16+00:00</Time>
+    </Item>
+    <Item>
+      <Source>SkySphere.fx</Source>
+      <Name>SkySphere</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\SkySphere.xnb</Output>
+      <Time>2012-11-20T02:05:16+00:00</Time>
     </Item>
     <Item>
       <Source>cube.fbx</Source>
@@ -97,20 +207,7 @@
       <Importer>FbxImporter</Importer>
       <Options>IntermediateFile, DontCacheImportedData</Options>
       <Output>obj\x86\Debug\sphere_0.xml</Output>
-      <Time>2012-11-13T09:26:50.2147168+00:00</Time>
-    </Item>
-    <Item>
-      <Source>cylinder.fbx</Source>
-      <Name>cylinder</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Darren\Documents\Visual Studio 2010\Projects\GamesAssignmentMArs\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\cylinder.xnb</Output>
-      <Time>2012-11-23T18:46:26.3423084+00:00</Time>
-      <Dependency>
-        <Key>obj\x86\Debug\cylinder_0.xml</Key>
-        <Value>2012-11-23T18:46:30.7815623+00:00</Value>
-      </Dependency>
+      <Time>2012-11-20T02:05:16+00:00</Time>
     </Item>
     <Item>
       <Source>cylinder.fbx</Source>
@@ -121,54 +218,10 @@
     </Item>
     <Item>
       <Source>cylinder2.fbx</Source>
-      <Name>cylinder2</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Darren\Documents\Visual Studio 2010\Projects\GamesAssignmentMArs\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\cylinder2.xnb</Output>
-      <Time>2012-11-23T19:44:23.7102025+00:00</Time>
-      <Dependency>
-        <Key>obj\x86\Debug\cylinder2_0.xml</Key>
-        <Value>2012-11-23T19:44:47.4515604+00:00</Value>
-      </Dependency>
-    </Item>
-    <Item>
-      <Source>cylinder2.fbx</Source>
       <Importer>FbxImporter</Importer>
       <Options>IntermediateFile, DontCacheImportedData</Options>
       <Output>obj\x86\Debug\cylinder2_0.xml</Output>
       <Time>2012-11-23T19:44:23.7102025+00:00</Time>
-    </Item>
-    <Item>
-      <Source>effects.fx</Source>
-      <Name>effects</Name>
-      <Importer>EffectImporter</Importer>
-      <Processor>EffectProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Darren\Documents\Visual Studio 2010\Projects\GamesAssignmentMArs\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\effects.xnb</Output>
-      <Time>2012-11-20T02:05:16+00:00</Time>
-    </Item>
-    <Item>
-      <Source>hm1.bmp</Source>
-      <Name>hm1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Darren\Documents\Visual Studio 2010\Projects\GamesAssignmentMArs\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\hm1.xnb</Output>
-      <Time>2012-11-20T02:05:16+00:00</Time>
-    </Item>
-    <Item>
-      <Source>wheel.fbx</Source>
-      <Name>wheel</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Darren\Documents\Visual Studio 2010\Projects\GamesAssignmentMArs\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\wheel.xnb</Output>
-      <Time>2012-11-23T21:52:00.6381537+00:00</Time>
-      <Dependency>
-        <Key>obj\x86\Debug\wheel_0.xml</Key>
-        <Value>2012-11-23T21:55:05.5807318+00:00</Value>
-      </Dependency>
     </Item>
     <Item>
       <Source>wheel.fbx</Source>
@@ -177,16 +230,30 @@
       <Output>obj\x86\Debug\wheel_0.xml</Output>
       <Time>2012-11-23T21:52:00.6381537+00:00</Time>
     </Item>
+    <Item>
+      <Source>cyl.fbx</Source>
+      <Importer>FbxImporter</Importer>
+      <Options>IntermediateFile, DontCacheImportedData</Options>
+      <Output>obj\x86\Debug\cyl_0.xml</Output>
+      <Time>2011-11-21T19:33:46+00:00</Time>
+    </Item>
+    <Item>
+      <Source>SphereHighPoly.fbx</Source>
+      <Importer>FbxImporter</Importer>
+      <Options>IntermediateFile, DontCacheImportedData</Options>
+      <Output>obj\x86\Debug\SphereHighPoly_0.xml</Output>
+      <Time>2012-11-20T02:05:16+00:00</Time>
+    </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <TargetPlatform>Windows</TargetPlatform>
       <TargetProfile>HiDef</TargetProfile>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
-      <RootDirectory>C:\Users\Darren\Documents\Visual Studio 2010\Projects\GamesAssignmentMArs\GamesAssignmentMArs\GamesAssignmentMArsContent\</RootDirectory>
-      <LoggerRootDirectory>C:\Users\Darren\Documents\Visual Studio 2010\Projects\GamesAssignmentMArs\GamesAssignmentMArs\GamesAssignmentMArs\</LoggerRootDirectory>
-      <IntermediateDirectory>C:\Users\Darren\Documents\Visual Studio 2010\Projects\GamesAssignmentMArs\GamesAssignmentMArs\GamesAssignmentMArsContent\obj\x86\Debug\</IntermediateDirectory>
-      <OutputDirectory>C:\Users\Darren\Documents\Visual Studio 2010\Projects\GamesAssignmentMArs\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\</OutputDirectory>
+      <RootDirectory>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArsContent\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArsContent\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>

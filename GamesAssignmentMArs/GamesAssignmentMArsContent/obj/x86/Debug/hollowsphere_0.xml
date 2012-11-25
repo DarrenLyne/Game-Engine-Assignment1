@@ -3,7 +3,7 @@
   <Asset Type="Graphics:NodeContent">
     <Name>RootNode</Name>
     <Identity>
-      <SourceFilename>C:\Users\Darren\Documents\Visual Studio 2010\Projects\GamesAssignmentMArs\GamesAssignmentMArs\GamesAssignmentMArsContent\hollowsphere.fbx</SourceFilename>
+      <SourceFilename>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArsContent\hollowsphere.fbx</SourceFilename>
       <SourceTool>FbxImporter</SourceTool>
     </Identity>
     <Transform>1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</Transform>
@@ -33,7 +33,7 @@
     <Resource ID="#Resource1" Type="Graphics:BasicMaterialContent">
       <Name>Default</Name>
       <Identity>
-        <SourceFilename>C:\Users\Darren\Documents\Visual Studio 2010\Projects\GamesAssignmentMArs\GamesAssignmentMArs\GamesAssignmentMArsContent\hollowsphere.fbx</SourceFilename>
+        <SourceFilename>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArsContent\hollowsphere.fbx</SourceFilename>
         <SourceTool>FbxImporter</SourceTool>
       </Identity>
       <OpaqueData>

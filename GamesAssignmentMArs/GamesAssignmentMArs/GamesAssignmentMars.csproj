@@ -115,8 +115,7 @@
     <Compile Include="GameEntity.cs" />
     <Compile Include="Ground.cs" />
     <Compile Include="Line.cs" />
-    <Compile Include="MarsRoverArm.cs" />
-    <Compile Include="MarsTerrain.cs" />
+    <Compile Include="MarsRover.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />

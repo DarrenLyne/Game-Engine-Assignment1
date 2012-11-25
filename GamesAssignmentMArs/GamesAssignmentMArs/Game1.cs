@@ -23,7 +23,6 @@ namespace GamesAssignmentMars
 
         Random random = new Random();
         Space space;
-        MarsTerrain terrain;
         public Space Space
         {
             get { return space; }
@@ -103,26 +102,6 @@ namespace GamesAssignmentMars
             base.Initialize();
         }
 
-
-        //void createTower()
-       // {
-        //    for (float y = 100; y > 20; y -= 5)
-         //   {
-         //       createCube(new Vector3(0, y, 0), 4, 4, 10);
-        // //   }
-        //}
-
-       //void createWall()
-        //{
-        //    for (float z = -20; z < 20; z += 5)
-        //    {
-         //       for (float y = 60; y > 0; y -= 5)
-         //       {
-         //           createCube(new Vector3(-20, y, z), 4, 4, 4);
-         //      }
-         //   }
-       // }
-
         void fireBall()
         {
             BepuEntity ball = new BepuEntity();
@@ -138,42 +117,18 @@ namespace GamesAssignmentMars
 
         }
 
-       // void createCube(Vector3 position, float width, float height, float length)
-       // {
-        //    BepuEntity theBox = new BepuEntity();
-       //     theBox.modelName = "cube";
-        //    theBox.localTransform = Matrix.CreateScale(new Vector3(width, height, length));
-        //    theBox.body = new Box(position, width, height, length, 1);
-        //    theBox.diffuse = new Vector3((float)random.NextDouble(), (float)random.NextDouble(), (float)random.NextDouble());
-         //   space.Add(theBox.body);
-         //   children.Add(theBox);
-       // }
-        MarsRoverArm arm;
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>       
+        MarsRover box = new MarsRover();
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             space = new Space();
-            space.ForceUpdater.Gravity = new Vector3(0, -9.81f, 0);
-
-            Box groundBox = new Box(Vector3.Zero, ground.width, 0.1f, ground.height);
-            space.Add(groundBox);
-
-            arm = new MarsRoverArm();
-            arm.LoadContent();
+            //space.ForceUpdater.Gravity = new Vector3(0, -9.81f, 0);
 
             cameraCylindar = new Cylinder(Camera.pos, 5, 5);
             space.Add(cameraCylindar);
-            terrain = new MarsTerrain();
-            children.Add(terrain);
-
-            //createTower();
-            //createWall();
+            box.LoadContent();
 
             foreach (GameEntity child in children)
             {
@@ -222,8 +177,8 @@ namespace GamesAssignmentMars
             {
                 children[i].Update(gameTime);
             }
+            box.Update(gameTime);
 
-            arm.Update(gameTime);
             cameraCylindar.Position = camera.pos;
             space.Update(timeDelta);
 
