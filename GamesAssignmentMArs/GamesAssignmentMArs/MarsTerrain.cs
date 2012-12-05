@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using BEPUphysics.Collidables;
 using BEPUphysics.MathExtensions;
 
 namespace GamesAssignmentMars
 {
-    class MarsTerrain : GameEntity
+    class MarsTerrain:GameEntity
     {
         SpriteBatch spriteBatch;
         GraphicsDevice device;
@@ -69,13 +68,13 @@ namespace GamesAssignmentMars
                     vertices[x + y * terrainWidth].Position = new Vector3(x, heightData[x, y], -y);
 
                     if (heightData[x, y] < minHeight + (maxHeight - minHeight) / 4)
-                        vertices[x + y * terrainWidth].Color = Color.Blue;
+                        vertices[x + y * terrainWidth].Color = Color.AntiqueWhite;
                     else if (heightData[x, y] < minHeight + (maxHeight - minHeight) * 2 / 4)
-                        vertices[x + y * terrainWidth].Color = Color.White;
+                        vertices[x + y * terrainWidth].Color = Color.OrangeRed;
                     else if (heightData[x, y] < minHeight + (maxHeight - minHeight) * 3 / 4)
-                        vertices[x + y * terrainWidth].Color = Color.White;
+                        vertices[x + y * terrainWidth].Color = Color.OrangeRed;
                     else
-                        vertices[x + y * terrainWidth].Color = Color.White;
+                        vertices[x + y * terrainWidth].Color = Color.OrangeRed;
                 }
             }
         }
@@ -180,9 +179,9 @@ namespace GamesAssignmentMars
         {
             device = Game1.Instance.GraphicsDevice;
             spriteBatch = Game1.Instance.SpriteBatch;
-            effect = Game1.Instance.Content.Load<Effect>("effects"); 
+            effect = Game1.Instance.Content.Load<Effect>("effects");
 
-            Texture2D heightMap = Game1.Instance.Content.Load<Texture2D>("hm1"); 
+            Texture2D heightMap = Game1.Instance.Content.Load<Texture2D>("mar0kuu2"); 
             LoadHeightData(heightMap);
             SetUpVertices();
             SetUpIndices();
@@ -225,7 +224,6 @@ namespace GamesAssignmentMars
 
             base.Draw(gameTime);
         }
+    
     }
-
-
 }

@@ -161,7 +161,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\mar0kuu2.xnb</Output>
-      <Time>2012-11-25T09:00:51.8263008+00:00</Time>
+      <Time>2012-11-27T09:55:59.0053092+00:00</Time>
     </Item>
     <Item>
       <Source>effects.fx</Source>
@@ -243,6 +243,26 @@
       <Options>IntermediateFile, DontCacheImportedData</Options>
       <Output>obj\x86\Debug\SphereHighPoly_0.xml</Output>
       <Time>2012-11-20T02:05:16+00:00</Time>
+    </Item>
+    <Item>
+      <Source>laser.fbx</Source>
+      <Name>laser</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\laser.xnb</Output>
+      <Time>2012-12-04T11:16:32.0702584+00:00</Time>
+      <Dependency>
+        <Key>obj\x86\Debug\laser_0.xml</Key>
+        <Value>2012-12-04T11:16:38.5036264+00:00</Value>
+      </Dependency>
+    </Item>
+    <Item>
+      <Source>laser.fbx</Source>
+      <Importer>FbxImporter</Importer>
+      <Options>IntermediateFile, DontCacheImportedData</Options>
+      <Output>obj\x86\Debug\laser_0.xml</Output>
+      <Time>2012-12-04T11:16:32.0702584+00:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>

@@ -18,33 +18,35 @@ namespace GamesAssignmentMars
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-         static Game1 instance = null;
+        static Game1 instance = null;
         GraphicsDeviceManager graphics;
 
         Random random = new Random();
         Space space;
+        Cylinder cameraCylindar;
+        float lastFired = 1.0f;
+        SpriteBatch spriteBatch;
+        private Ground ground = null;
+        private Camera camera;
+        List<GameEntity> children = new List<GameEntity>();
+
         public Space Space
         {
             get { return space; }
             set { space = value; }
         }
-        Cylinder cameraCylindar;
-
-        float lastFired = 1.0f;
 
         public GraphicsDeviceManager Graphics
         {
             get { return graphics; }
             set { graphics = value; }
         }
-        SpriteBatch spriteBatch;
 
         public SpriteBatch SpriteBatch1
         {
             get { return spriteBatch; }
             set { spriteBatch = value; }
         }
-        private Ground ground = null;
 
         public Ground Ground
         {
@@ -57,8 +59,6 @@ namespace GamesAssignmentMars
             get { return spriteBatch; }
             set { spriteBatch = value; }
         }
-        private Camera camera;
-        List<GameEntity> children = new List<GameEntity>();
 
         public List<GameEntity> Children
         {
@@ -102,39 +102,24 @@ namespace GamesAssignmentMars
             base.Initialize();
         }
 
-        void fireBall()
-        {
-            BepuEntity ball = new BepuEntity();
-            ball.modelName = "sphere";
-            float size = 1;
-            ball.localTransform = Matrix.CreateScale(new Vector3(size, size, size));
-            ball.body = new Sphere(Camera.pos + (Camera.look * 5), size, size);
-            ball.diffuse = new Vector3((float)random.NextDouble(), (float)random.NextDouble(), (float)random.NextDouble());
-            space.Add(ball.body);
-            ball.LoadContent();
-            ball.body.ApplyImpulse(Vector3.Zero, Camera.look * 50);
-            children.Add(ball);
 
-        }
-
-        MarsRover box = new MarsRover();
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             space = new Space();
-            //space.ForceUpdater.Gravity = new Vector3(0, -9.81f, 0);
+            space.ForceUpdater.Gravity = new Vector3(0, -9.81f, 0);
 
             cameraCylindar = new Cylinder(Camera.pos, 5, 5);
             space.Add(cameraCylindar);
-            box.LoadContent();
+            children.Add(new MarsTerrain());
+            children.Add(new MarsRover());
 
             foreach (GameEntity child in children)
             {
                 child.LoadContent();
             }
-
         }
 
         /// <summary>
@@ -177,12 +162,10 @@ namespace GamesAssignmentMars
             {
                 children[i].Update(gameTime);
             }
-            box.Update(gameTime);
 
             cameraCylindar.Position = camera.pos;
             space.Update(timeDelta);
 
-            
             base.Update(gameTime);
         }
 
@@ -202,6 +185,7 @@ namespace GamesAssignmentMars
                 child.Draw(gameTime);
             }
             // Draw any lines
+            Line.DrawLine(new Vector3(9, 10, 19), new Vector3(15, 10, 19), Color.Green);
             Line.Draw();
 
             spriteBatch.End();            
@@ -225,6 +209,20 @@ namespace GamesAssignmentMars
             {
                 return graphics;
             }
+        }
+
+        void fireBall()
+        {
+            BepuEntity ball = new BepuEntity();
+            ball.modelName = "sphere";
+            float size = 1;
+            ball.localTransform = Matrix.CreateScale(new Vector3(size, size, size));
+            ball.body = new Sphere(Camera.pos + (Camera.look * 5), size, size);
+            ball.diffuse = new Vector3((float)random.NextDouble(), (float)random.NextDouble(), (float)random.NextDouble());
+            space.Add(ball.body);
+            ball.LoadContent();
+            ball.body.ApplyImpulse(Vector3.Zero, Camera.look * 50);
+            children.Add(ball);
         }
     }
 }

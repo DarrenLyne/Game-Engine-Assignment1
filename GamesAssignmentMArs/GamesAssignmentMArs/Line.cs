@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace GamesAssignmentMars
 {
-    class Line
+    public class Line
     {
         private static VertexPositionColor[] pointList = new VertexPositionColor[400];
         private static BasicEffect basicEffect = new BasicEffect(Game1.Instance.GraphicsDevice);

@@ -80,7 +80,7 @@ namespace GamesAssignmentMars
 
             if (keyboardState.IsKeyDown(Keys.W))
             {
-                walk(timeDelta*0.5f);
+                walk(timeDelta*20.0f);
             }
 
             if (keyboardState.IsKeyDown(Keys.S))
