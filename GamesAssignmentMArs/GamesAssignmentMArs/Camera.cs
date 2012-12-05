@@ -37,7 +37,7 @@ namespace GamesAssignmentMars
 
         public Camera()
         {
-            pos = new Vector3(0.0f, 30.0f, 50.0f);
+            pos = new Vector3(0.0f+248, 30.0f+35, 50.0f-250);
             look = new Vector3(0.0f, 0.0f, -1.0f);
         }
 
@@ -80,7 +80,7 @@ namespace GamesAssignmentMars
 
             if (keyboardState.IsKeyDown(Keys.W))
             {
-                walk(timeDelta*20.0f);
+                walk(timeDelta*100.0f);
             }
 
             if (keyboardState.IsKeyDown(Keys.S))

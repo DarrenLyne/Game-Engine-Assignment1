@@ -186,6 +186,7 @@ namespace GamesAssignmentMars
             }
             // Draw any lines
             Line.DrawLine(new Vector3(9, 10, 19), new Vector3(15, 10, 19), Color.Green);
+            Line.DrawLine(new Vector3(250, 0, -250), new Vector3(250, 70, -250), Color.Green);
             Line.Draw();
 
             spriteBatch.End();            

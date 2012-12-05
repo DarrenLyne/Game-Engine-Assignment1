@@ -33,31 +33,21 @@ namespace GamesAssignmentMars
             BepuEntity cameraArm = new BepuEntity();
             BepuEntity drillArm = new BepuEntity();
 
-            BepuEntity ground2 = new BepuEntity();
-            ground2.modelName = "cube";
-            ground2.LoadContent();
-            ground2.localTransform = Matrix.CreateScale(new Vector3(100, 5, 100));
-            ground2.body = new Box(new Vector3(2, 1, 10), 100, 5, 100);
-           // ground2.body.BecomeKinematic();
-            ground2.diffuse = new Vector3(0.5f, 0.5f, 0.5f);
-            Game1.Instance.Space.Add(ground2.body);
-            Game1.Instance.Children.Add(ground2);
-
             BepuEntity baseBox = new BepuEntity();
             baseBox.modelName = "cube";
             baseBox.LoadContent();
             baseBox.localTransform = Matrix.CreateScale(new Vector3(15, 5, 20));
-            baseBox.body = new Box(new Vector3(2, 15, 10), 15, 5, 20);
+            baseBox.body = new Box(new Vector3(2 + 258, 15 + 30, 10 - 270), 15, 5, 20);
             baseBox.body.BecomeDynamic(100);
             baseBox.body.CollisionInformation.LocalPosition = new Vector3(0, .8f, 0);
             baseBox.diffuse = new Vector3(0.5f, 0.5f, 0.5f);
             Game1.Instance.Space.Add(baseBox.body);
             Game1.Instance.Children.Add(baseBox);
 
-            drillArm=AddCylinder(new Vector3(9, 14, 26), false);
-            cameraArm = AddCylinder(new Vector3(-4, 24, 18), true);
+            drillArm = AddCylinder(new Vector3(9 + 258, 14 + 30, 26 - 270), false);
+            cameraArm = AddCylinder(new Vector3(-4 + 258, 24 + 30, 18 - 270), true);
 
-            baseDrillJoint = new RevoluteJoint(baseBox.body, drillArm.body, new Vector3(9, 14, 20), Vector3.Right);
+            baseDrillJoint = new RevoluteJoint(baseBox.body, drillArm.body, new Vector3(9 + 258, 14 + 30, 20 - 270), Vector3.Right);
             baseDrillJoint.Motor.IsActive = true;
             baseDrillJoint.Motor.Settings.Mode = MotorMode.Servomechanism;
             baseDrillJoint.Motor.Settings.MaximumForce = 3500;
@@ -73,7 +63,7 @@ namespace GamesAssignmentMars
             test2.modelName = "cube";
             test2.LoadContent();
             test2.localTransform = Matrix.CreateScale(new Vector3(3, 3, 3));
-            test2.body = new Cylinder(new Vector3(-4, 34, 18), 3, 3, 3);
+            test2.body = new Cylinder(new Vector3(-4 + 258, 34 + 30, 18 - 270), 3, 3, 3);
             test2.diffuse = new Vector3(0.5f, 0.5f, 0.5f);
             test2.body.Orientation = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), -MathHelper.PiOver2);
             Game1.Instance.Space.Add(test2.body);
@@ -85,12 +75,12 @@ namespace GamesAssignmentMars
             tester.Motor.Settings.MaximumForce = 2500;
             Game1.Instance.Space.Add(tester);
 
-            AddBackWheel(new Vector3(-7, 10, 3), baseBox.body);
-            AddBackWheel(new Vector3(11, 10, 3), baseBox.body);
+            AddBackWheel(new Vector3(-7 + 258, 10 + 30, 3 - 270), baseBox.body);
+            AddBackWheel(new Vector3(11 + 258, 10 + 30, 3 - 270), baseBox.body);
            // AddBackWheel(new Vector3(-7, 4, 10), baseBox.body);
             //AddBackWheel(new Vector3(11, 4, 10), baseBox.body);
-            var wheel1 = AddDriveWheel(new Vector3(11, 10, 13), baseBox.body, out drivingMotor1, out steeringMotor1);
-            var wheel2 = AddDriveWheel(new Vector3(-7, 10, 13), baseBox.body, out drivingMotor2, out steeringMotor2);
+            var wheel1 = AddDriveWheel(new Vector3(11 + 258, 10 + 30, 13 - 270), baseBox.body, out drivingMotor1, out steeringMotor1);
+            var wheel2 = AddDriveWheel(new Vector3(-7 + 258, 10 + 30, 13 - 270), baseBox.body, out drivingMotor2, out steeringMotor2);
             var steeringStabilizer = new RevoluteAngularJoint(wheel1, wheel2, Vector3.Right);
             Game1.Instance.Space.Add(steeringStabilizer);
         }
