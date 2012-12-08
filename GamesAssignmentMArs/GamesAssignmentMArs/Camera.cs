@@ -22,6 +22,7 @@ namespace GamesAssignmentMars
         public Matrix view;
         private KeyboardState keyboardState;
         private MouseState mouseState;
+        public bool isRoverCamera = false;
 
         public override void Draw(GameTime gameTime)
         {
@@ -37,7 +38,7 @@ namespace GamesAssignmentMars
 
         public Camera()
         {
-            pos = new Vector3(0.0f+248, 30.0f+35, 50.0f-250);
+            pos = new Vector3(0.0f+248, 30.0f+34, 50.0f-250);
             look = new Vector3(0.0f, 0.0f, -1.0f);
         }
 
@@ -48,54 +49,94 @@ namespace GamesAssignmentMars
 
             keyboardState = Keyboard.GetState();
             mouseState = Mouse.GetState();
-
-            int mouseX = mouseState.X;
-            int mouseY = mouseState.Y;
-
-            int midX = GraphicsDeviceManager.DefaultBackBufferHeight / 2;
-            int midY = GraphicsDeviceManager.DefaultBackBufferWidth / 2;
-
-            int deltaX = mouseX - midX;
-            int deltaY = mouseY - midY;
-
-            yaw(-(float)deltaX / 100.0f);
-            pitch(-(float)deltaY / 100.0f);
-            Mouse.SetPosition(midX, midY);
-
-            if (mouseState.LeftButton == ButtonState.Pressed)
+            if (!isRoverCamera)
             {
-                Vector3 newTargetPos = pos + (look * 50.0f);
+                int mouseX = mouseState.X;
+                int mouseY = mouseState.Y;
+
+                int midX = GraphicsDeviceManager.DefaultBackBufferHeight / 2;
+                int midY = GraphicsDeviceManager.DefaultBackBufferWidth / 2;
+
+                int deltaX = mouseX - midX;
+                int deltaY = mouseY - midY;
+
+                yaw(-(float)deltaX / 100.0f);
+                pitch(-(float)deltaY / 100.0f);
+                Mouse.SetPosition(midX, midY);
+
+                if (mouseState.LeftButton == ButtonState.Pressed)
+                {
+                    Vector3 newTargetPos = pos + (look * 50.0f);
+                }
+
+                if (mouseState.RightButton == ButtonState.Pressed)
+                {
+                    Vector3 newTargetPos = pos;
+
+                }
+
+                if (keyboardState.IsKeyDown(Keys.LeftShift))
+                {
+                    timeDelta *= 20.0f;
+                }
+
+                if (keyboardState.IsKeyDown(Keys.W))
+                {
+                    walk(timeDelta * 10.0f);
+                }
+
+                if (keyboardState.IsKeyDown(Keys.S))
+                {
+                    walk(-timeDelta);
+                }
+
+                if (keyboardState.IsKeyDown(Keys.A))
+                {
+                    strafe(-timeDelta);
+                }
+
+                if (keyboardState.IsKeyDown(Keys.D))
+                {
+                    strafe(timeDelta);
+                }
             }
-
-            if (mouseState.RightButton == ButtonState.Pressed)
+            else
             {
-                Vector3 newTargetPos = pos;
+                if (keyboardState.IsKeyDown(Keys.W))
+                {
+                    Game1.Instance.rover.baseCameraJoint.Motor.Settings.Servo.Goal -= 1 * 0.01f;
+                    Matrix T = Matrix.CreateRotationY(-0.01f);
+                    Game1.Instance.rover.laserLook = Vector3.Transform(Game1.Instance.rover.laserLook, T);
+                    look = Vector3.Transform(Game1.Instance.rover.laserLook, T);
+                    pos = Game1.Instance.rover.cameraLaser.body.Position + (Game1.Instance.rover.laserLook * 3);
+                }
 
-            }
+                if (keyboardState.IsKeyDown(Keys.S))
+                {
+                    Game1.Instance.rover.baseCameraJoint.Motor.Settings.Servo.Goal += 1 * 0.01f;
+                    Matrix T = Matrix.CreateRotationY(0.01f);
+                    Game1.Instance.rover.laserLook = Vector3.Transform(Game1.Instance.rover.laserLook, T);
+                    look = Vector3.Transform(Game1.Instance.rover.laserLook, T);
+                    pos = Game1.Instance.rover.cameraLaser.body.Position + (Game1.Instance.rover.laserLook * 3);
+                }
 
-            if (keyboardState.IsKeyDown(Keys.LeftShift))
-            {
-                timeDelta *= 20.0f;
-            }
+                if (keyboardState.IsKeyDown(Keys.A))
+                {
+                    Game1.Instance.rover.tester.Motor.Settings.Servo.Goal += 1 * 0.01f;
+                    Matrix T = Matrix.CreateFromAxisAngle(right, 0.01f);//rotating around the right vector.
+                    Game1.Instance.rover.laserLook = Vector3.Transform(Game1.Instance.rover.laserLook, T);
+                    look = Vector3.Transform(Game1.Instance.rover.laserLook, T);
+                    pos = Game1.Instance.rover.cameraLaser.body.Position + (Game1.Instance.rover.laserLook * 3);
+                }
 
-            if (keyboardState.IsKeyDown(Keys.W))
-            {
-                walk(timeDelta*100.0f);
-            }
-
-            if (keyboardState.IsKeyDown(Keys.S))
-            {
-                walk(-timeDelta);
-            }
-
-            if (keyboardState.IsKeyDown(Keys.A))
-            {
-                strafe(-timeDelta);
-            }
-
-            if (keyboardState.IsKeyDown(Keys.D))
-            {
-                strafe(timeDelta);
+                if (keyboardState.IsKeyDown(Keys.D))
+                {
+                    Game1.Instance.rover.tester.Motor.Settings.Servo.Goal -= 1 * 0.01f;
+                    Matrix T = Matrix.CreateFromAxisAngle(right,-0.01f);//rotating around the right vector.
+                    Game1.Instance.rover.laserLook = Vector3.Transform(Game1.Instance.rover.laserLook, T);
+                    look = Vector3.Transform(Game1.Instance.rover.laserLook, T);
+                    pos = Game1.Instance.rover.cameraLaser.body.Position + (Game1.Instance.rover.laserLook * 3);
+                }
             }
 
             view = Matrix.CreateLookAt(pos, pos + look, up);

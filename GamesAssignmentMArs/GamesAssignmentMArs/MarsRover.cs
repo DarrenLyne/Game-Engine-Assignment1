@@ -11,19 +11,41 @@ using BEPUphysics.CollisionRuleManagement;
 using BEPUphysics.Constraints.TwoEntity.Joints;
 using BEPUphysics.Constraints.TwoEntity.JointLimits;
 using BEPUphysics.Entities;
+using BEPUphysics.DeactivationManagement;
 
 namespace GamesAssignmentMars
 {
-    class MarsRover: BepuEntity
+    public class MarsRover: BepuEntity
     {
-        RevoluteJoint baseCameraJoint;
+        public RevoluteJoint baseCameraJoint;
         RevoluteJoint baseDrillJoint;
-        RevoluteJoint tester;
+        public RevoluteJoint tester;
         private readonly RevoluteMotor drivingMotor1;
         private readonly RevoluteMotor drivingMotor2;
         private readonly RevoluteMotor steeringMotor1;
         private readonly RevoluteMotor steeringMotor2;
-        BepuEntity test2 = new BepuEntity();
+        PointOnLineJoint pointOnLineJoint1;
+        LinearAxisLimit suspensionLimit1;
+        //This linear axis motor
+        LinearAxisMotor suspensionSpring1;
+        RevoluteAngularJoint revoluteAngularJoint1;
+        PointOnLineJoint pointOnLineJoint2;
+        LinearAxisLimit suspensionLimit2;
+        //This linear axis motor
+        LinearAxisMotor suspensionSpring2;
+        RevoluteAngularJoint revoluteAngularJoint2;
+        PointOnLineJoint pointOnLineJoint3;
+        LinearAxisLimit suspensionLimit3;
+        //This linear axis motor
+        LinearAxisMotor suspensionSpring3;
+        SwivelHingeAngularJoint swivelHingeAngularJoint1;
+        PointOnLineJoint pointOnLineJoint4;
+        LinearAxisLimit suspensionLimit4;
+        //This linear axis motor
+        LinearAxisMotor suspensionSpring4;
+        SwivelHingeAngularJoint swivelHingeAngularJoint2;
+        public BepuEntity cameraLaser = new BepuEntity();
+        BepuEntity baseBox = new BepuEntity();
         private float maximumTurnAngle = MathHelper.Pi * .2f;
         private float driveSpeed = 1000;
 
@@ -33,7 +55,6 @@ namespace GamesAssignmentMars
             BepuEntity cameraArm = new BepuEntity();
             BepuEntity drillArm = new BepuEntity();
 
-            BepuEntity baseBox = new BepuEntity();
             baseBox.modelName = "cube";
             baseBox.LoadContent();
             baseBox.localTransform = Matrix.CreateScale(new Vector3(15, 5, 20));
@@ -60,27 +81,147 @@ namespace GamesAssignmentMars
             Game1.Instance.Space.Add(baseCameraJoint);
 
 
-            test2.modelName = "cube";
-            test2.LoadContent();
-            test2.localTransform = Matrix.CreateScale(new Vector3(3, 3, 3));
-            test2.body = new Cylinder(new Vector3(-4 + 258, 34 + 30, 18 - 270), 3, 3, 3);
-            test2.diffuse = new Vector3(0.5f, 0.5f, 0.5f);
-            test2.body.Orientation = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), -MathHelper.PiOver2);
-            Game1.Instance.Space.Add(test2.body);
-            Game1.Instance.Children.Add(test2);
+            cameraLaser.modelName = "cube";
+            cameraLaser.LoadContent();
+            cameraLaser.localTransform = Matrix.CreateScale(new Vector3(3, 3, 3));
+            cameraLaser.body = new Cylinder(new Vector3(254, 64,- 252), 3, 3, 3);
+            cameraLaser.diffuse = new Vector3(0.5f, 0.5f, 0.5f);
+            cameraLaser.body.Orientation = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), -MathHelper.PiOver2);
+            Game1.Instance.Space.Add(cameraLaser.body);
+            Game1.Instance.Children.Add(cameraLaser);
 
-            tester = new RevoluteJoint(cameraArm.body, test2.body, test2.body.Position, -Vector3.Right);
+            tester = new RevoluteJoint(cameraArm.body, cameraLaser.body, cameraLaser.body.Position, -Vector3.Right);
             tester.Motor.IsActive = true;
             tester.Motor.Settings.Mode = MotorMode.Servomechanism;
             tester.Motor.Settings.MaximumForce = 2500;
             Game1.Instance.Space.Add(tester);
 
-            AddBackWheel(new Vector3(-7 + 258, 10 + 30, 3 - 270), baseBox.body);
-            AddBackWheel(new Vector3(11 + 258, 10 + 30, 3 - 270), baseBox.body);
+            Entity backWheel1 = AddBackWheel(new Vector3(-7 + 258, 10 + 30, 3 - 270), baseBox.body);
+
+            //Connect the wheel to the body.
+            pointOnLineJoint1 = new PointOnLineJoint(baseBox.body, backWheel1, backWheel1.Position, Vector3.Down, backWheel1.Position);
+            suspensionLimit1 = new LinearAxisLimit(baseBox.body, backWheel1, backWheel1.Position, backWheel1.Position, Vector3.Down, -1, 0);
+            //This linear axis motor will give the suspension its springiness by pushing the wheels outward.
+            suspensionSpring1 = new LinearAxisMotor(baseBox.body, backWheel1, backWheel1.Position, backWheel1.Position, Vector3.Down);
+            suspensionSpring1.Settings.Mode = MotorMode.Servomechanism;
+            suspensionSpring1.Settings.Servo.Goal = 0;
+            suspensionSpring1.Settings.Servo.SpringSettings.StiffnessConstant = 300;
+            suspensionSpring1.Settings.Servo.SpringSettings.DampingConstant = 70;
+
+            revoluteAngularJoint1 = new RevoluteAngularJoint(baseBox.body, backWheel1, Vector3.Right);
+
+            Game1.Instance.Space.Add(pointOnLineJoint1);
+            Game1.Instance.Space.Add(suspensionLimit1);
+            Game1.Instance.Space.Add(suspensionSpring1);
+            Game1.Instance.Space.Add(revoluteAngularJoint1);
+
+            Entity backWheel2 = AddBackWheel(new Vector3(11 + 258, 10 + 30, 3 - 270), baseBox.body);
+
+            //Connect the wheel to the body.
+            pointOnLineJoint2 = new PointOnLineJoint(baseBox.body, backWheel2, backWheel2.Position, Vector3.Down, backWheel2.Position);
+            suspensionLimit2 = new LinearAxisLimit(baseBox.body, backWheel2, backWheel2.Position, backWheel2.Position, Vector3.Down, -1, 0);
+            suspensionSpring2 = new LinearAxisMotor(baseBox.body, backWheel2, backWheel2.Position, backWheel2.Position, Vector3.Down);
+            suspensionSpring2.Settings.Mode = MotorMode.Servomechanism;
+            suspensionSpring2.Settings.Servo.Goal = 0;
+            suspensionSpring2.Settings.Servo.SpringSettings.StiffnessConstant = 300;
+            suspensionSpring2.Settings.Servo.SpringSettings.DampingConstant = 70;
+
+            revoluteAngularJoint2 = new RevoluteAngularJoint(baseBox.body, backWheel2, Vector3.Right);
+            Game1.Instance.Space.Add(pointOnLineJoint2);
+            Game1.Instance.Space.Add(suspensionLimit2);
+            Game1.Instance.Space.Add(suspensionSpring2);
+            Game1.Instance.Space.Add(revoluteAngularJoint2);
+
            // AddBackWheel(new Vector3(-7, 4, 10), baseBox.body);
             //AddBackWheel(new Vector3(11, 4, 10), baseBox.body);
-            var wheel1 = AddDriveWheel(new Vector3(11 + 258, 10 + 30, 13 - 270), baseBox.body, out drivingMotor1, out steeringMotor1);
-            var wheel2 = AddDriveWheel(new Vector3(-7 + 258, 10 + 30, 13 - 270), baseBox.body, out drivingMotor2, out steeringMotor2);
+            var wheel1 = AddDriveWheel(new Vector3(11 + 258, 10 + 30, 13 - 270), baseBox.body);
+
+            //Connect the wheel to the body.
+            pointOnLineJoint3 = new PointOnLineJoint(baseBox.body, wheel1, wheel1.Position, Vector3.Down, wheel1.Position);
+            suspensionLimit3 = new LinearAxisLimit(baseBox.body, wheel1, wheel1.Position, wheel1.Position, Vector3.Down, -1, 0);
+            //This linear axis motor will give the suspension its springiness by pushing the wheels outward.
+            suspensionSpring3= new LinearAxisMotor(baseBox.body, wheel1, wheel1.Position, wheel1.Position, Vector3.Down);
+            suspensionSpring3.Settings.Mode = MotorMode.Servomechanism;
+            suspensionSpring3.Settings.Servo.Goal = 0;
+            suspensionSpring3.Settings.Servo.SpringSettings.StiffnessConstant = 300;
+            suspensionSpring3.Settings.Servo.SpringSettings.DampingConstant = 70;
+
+            swivelHingeAngularJoint1 = new SwivelHingeAngularJoint(baseBox.body, wheel1, Vector3.Up, Vector3.Right);
+            //Make the swivel hinge extremely rigid.  There are going to be extreme conditions when the wheels get up to speed;
+            //we don't want the forces involved to torque the wheel off the frame!
+            swivelHingeAngularJoint1.SpringSettings.DampingConstant *= 1000;
+            swivelHingeAngularJoint1.SpringSettings.StiffnessConstant *= 1000;
+            //Motorize the wheel.
+            drivingMotor1 = new RevoluteMotor(baseBox.body, wheel1, Vector3.Left);
+            drivingMotor1.Settings.VelocityMotor.Softness = .3f;
+            drivingMotor1.Settings.MaximumForce = 100;
+            //Let it roll when the user isn't giving specific commands.
+            drivingMotor1.IsActive = false;
+            steeringMotor1 = new RevoluteMotor(baseBox.body, wheel1, Vector3.Up);
+            steeringMotor1.Settings.Mode = MotorMode.Servomechanism;
+
+            steeringMotor1.Basis.SetWorldAxes(Vector3.Up, Vector3.Right);
+            steeringMotor1.TestAxis = Vector3.Right;
+
+
+            steeringMotor1.Settings.Servo.SpringSettings.Advanced.UseAdvancedSettings = true;
+            steeringMotor1.Settings.Servo.SpringSettings.Advanced.Softness = 0;
+            steeringMotor1.Settings.Servo.SpringSettings.Advanced.ErrorReductionFactor = 0f;
+
+            var steeringConstraint = new RevoluteLimit(baseBox.body, wheel1, Vector3.Up, Vector3.Right, -maximumTurnAngle, maximumTurnAngle);
+
+            Game1.Instance.Space.Add(pointOnLineJoint3);
+            Game1.Instance.Space.Add(suspensionLimit3);
+            Game1.Instance.Space.Add(suspensionSpring3);
+            Game1.Instance.Space.Add(swivelHingeAngularJoint1);
+            Game1.Instance.Space.Add(drivingMotor1);
+            Game1.Instance.Space.Add(steeringMotor1);
+            Game1.Instance.Space.Add(steeringConstraint);
+
+            var wheel2 = AddDriveWheel(new Vector3(-7 + 258, 10 + 30, 13 - 270), baseBox.body);
+
+            //Connect the wheel to the body.
+            pointOnLineJoint4 = new PointOnLineJoint(baseBox.body, wheel2, wheel2.Position, Vector3.Down, wheel2.Position);
+            suspensionLimit4 = new LinearAxisLimit(baseBox.body, wheel2, wheel2.Position, wheel2.Position, Vector3.Down, -1, 0);
+            //This linear axis motor will give the suspension its springiness by pushing the wheels outward.
+            suspensionSpring4 = new LinearAxisMotor(baseBox.body, wheel2, wheel2.Position, wheel2.Position, Vector3.Down);
+            suspensionSpring4.Settings.Mode = MotorMode.Servomechanism;
+            suspensionSpring4.Settings.Servo.Goal = 0;
+            suspensionSpring4.Settings.Servo.SpringSettings.StiffnessConstant = 300;
+            suspensionSpring4.Settings.Servo.SpringSettings.DampingConstant = 70;
+
+            swivelHingeAngularJoint2 = new SwivelHingeAngularJoint(baseBox.body, wheel2, Vector3.Up, Vector3.Right);
+            //Make the swivel hinge extremely rigid.  There are going to be extreme conditions when the wheels get up to speed;
+            //we don't want the forces involved to torque the wheel off the frame!
+            swivelHingeAngularJoint2.SpringSettings.DampingConstant *= 1000;
+            swivelHingeAngularJoint2.SpringSettings.StiffnessConstant *= 1000;
+            //Motorize the wheel.
+            drivingMotor2 = new RevoluteMotor(baseBox.body, wheel2, Vector3.Left);
+            drivingMotor2.Settings.VelocityMotor.Softness = .3f;
+            drivingMotor2.Settings.MaximumForce = 100;
+            //Let it roll when the user isn't giving specific commands.
+            drivingMotor2.IsActive = false;
+            steeringMotor2 = new RevoluteMotor(baseBox.body, wheel2, Vector3.Up);
+            steeringMotor2.Settings.Mode = MotorMode.Servomechanism;
+
+            steeringMotor2.Basis.SetWorldAxes(Vector3.Up, Vector3.Right);
+            steeringMotor2.TestAxis = Vector3.Right;
+
+
+            steeringMotor2.Settings.Servo.SpringSettings.Advanced.UseAdvancedSettings = true;
+            steeringMotor2.Settings.Servo.SpringSettings.Advanced.Softness = 0;
+            steeringMotor2.Settings.Servo.SpringSettings.Advanced.ErrorReductionFactor = 0f;
+
+            steeringConstraint = new RevoluteLimit(baseBox.body, wheel2, Vector3.Up, Vector3.Right, -maximumTurnAngle, maximumTurnAngle);
+
+            Game1.Instance.Space.Add(pointOnLineJoint4);
+            Game1.Instance.Space.Add(suspensionLimit4);
+            Game1.Instance.Space.Add(suspensionSpring4);
+            Game1.Instance.Space.Add(swivelHingeAngularJoint2);
+            Game1.Instance.Space.Add(drivingMotor2);
+            Game1.Instance.Space.Add(steeringMotor2);
+            Game1.Instance.Space.Add(steeringConstraint);
+
             var steeringStabilizer = new RevoluteAngularJoint(wheel1, wheel2, Vector3.Right);
             Game1.Instance.Space.Add(steeringStabilizer);
         }
@@ -88,7 +229,7 @@ namespace GamesAssignmentMars
         public override void LoadContent()
         {
         }
-        Vector3 lookTester = new Vector3(-0.2f, 0, 1);
+        public Vector3 laserLook = new Vector3(-0.2f, 0, 1);
         public override void Update(GameTime gameTime)
         {
             KeyboardState keyState = Keyboard.GetState();
@@ -96,26 +237,26 @@ namespace GamesAssignmentMars
             {
                 baseCameraJoint.Motor.Settings.Servo.Goal -= 1 * 0.01f;
                 Matrix T = Matrix.CreateRotationY(-0.01f);
-                lookTester = Vector3.Transform(lookTester, T);
+                laserLook = Vector3.Transform(laserLook, T);
 
             }
             if (keyState.IsKeyDown(Keys.M))
             {
                 baseCameraJoint.Motor.Settings.Servo.Goal += 1 * 0.01f;
                 Matrix T = Matrix.CreateRotationY(0.01f);
-                lookTester = Vector3.Transform(lookTester, T);
+                laserLook = Vector3.Transform(laserLook, T);
             }
             if (keyState.IsKeyDown(Keys.B))
             {
                 tester.Motor.Settings.Servo.Goal -= 1 * 0.01f;
                 Matrix T = Matrix.CreateFromAxisAngle(right, -0.01f);//rotating around the right vector.
-                lookTester = Vector3.Transform(lookTester, T);
+                laserLook = Vector3.Transform(laserLook, T);
             }
             if (keyState.IsKeyDown(Keys.V))
             {
                 tester.Motor.Settings.Servo.Goal += 1 * 0.01f;
                 Matrix T = Matrix.CreateFromAxisAngle(right, 0.01f);//rotating around the right vector.
-                lookTester = Vector3.Transform(lookTester, T);
+                laserLook = Vector3.Transform(laserLook, T);
             }
             if(keyState.IsKeyDown(Keys.C))
             {
@@ -124,10 +265,10 @@ namespace GamesAssignmentMars
 
             if(keyState.IsKeyDown(Keys.Space))
             {
-                Lazer bullet = new Lazer();
-                bullet.pos = test2.body.Position;
-                bullet.look = lookTester;
-                 Game1.Instance.Children.Add(bullet);
+                Lazer laser = new Lazer();
+                laser.pos = cameraLaser.body.Position;
+                laser.look = laserLook;
+                Game1.Instance.Children.Add(laser);
             }
 
             ////Scale the corrective velocity by the wheel angular velocity to compensate for a long time step duration.
@@ -178,9 +319,51 @@ namespace GamesAssignmentMars
                 steeringMotor2.Settings.Servo.Goal = 0;
             }
 
+            if (keyState.IsKeyDown(Keys.P))
+            {
+                Game1.Instance.Camera.look = laserLook;
+                Game1.Instance.Camera.pos = new Vector3(cameraLaser.body.Position.X, cameraLaser.body.Position.Y, cameraLaser.body.Position.Z) + (laserLook*3);
+                Game1.Instance.Camera.isRoverCamera = true;
+
+            }
+            if (keyState.IsKeyDown(Keys.I))
+            {
+                Explosion kapowMaker = new Explosion(Vector3.Zero, 400, 15, Game1.Instance.Space);
+                //Detonate the bomb
+                kapowMaker.Position = baseBox.body.Position;
+                baseCameraJoint.IsActive = false;
+                baseDrillJoint.IsActive = false;
+                tester.IsActive = false;
+                drivingMotor1.IsActive = false;
+                drivingMotor2.IsActive = false;
+                steeringMotor1.IsActive = false;
+                steeringMotor2.IsActive = false;
+                pointOnLineJoint1.IsActive = false;
+                suspensionLimit1.IsActive = false;
+                //This linear axis motor
+                suspensionSpring1.IsActive = false;
+                revoluteAngularJoint1.IsActive = false;
+
+                pointOnLineJoint2.IsActive = false;
+                suspensionLimit2.IsActive = false;
+                //This linear axis motor
+                suspensionSpring2.IsActive = false;
+                revoluteAngularJoint2.IsActive = false;
+                pointOnLineJoint3.IsActive = false;
+                suspensionLimit3.IsActive = false;
+                suspensionSpring3.IsActive = false;
+                swivelHingeAngularJoint1.IsActive = false;
+                pointOnLineJoint4.IsActive = false;
+                suspensionLimit4.IsActive = false;
+                suspensionSpring4.IsActive = false;
+                swivelHingeAngularJoint2.IsActive = false;
+                kapowMaker.Explode();
+            }
+
+
         }
 
-        void AddBackWheel(Vector3 wheelPosition,Entity baseBody)
+        Entity AddBackWheel(Vector3 wheelPosition,Entity baseBody)
         {
             var wheel = new BepuEntity();
             wheel.modelName = "cyl";
@@ -194,28 +377,14 @@ namespace GamesAssignmentMars
             //Preventing the occasional pointless collision pair can speed things up.
             CollisionRules.AddRule(wheel.body, baseBody, CollisionRule.NoBroadPhase);
 
-            //Connect the wheel to the body.
-            var pointOnLineJoint = new PointOnLineJoint(baseBody, wheel.body, wheel.body.Position, Vector3.Down, wheel.body.Position);
-            var suspensionLimit = new LinearAxisLimit(baseBody, wheel.body, wheel.body.Position, wheel.body.Position, Vector3.Down, -1, 0);
-            //This linear axis motor will give the suspension its springiness by pushing the wheels outward.
-            var suspensionSpring = new LinearAxisMotor(baseBody, wheel.body, wheel.body.Position, wheel.body.Position, Vector3.Down);
-            suspensionSpring.Settings.Mode = MotorMode.Servomechanism;
-            suspensionSpring.Settings.Servo.Goal = 0;
-            suspensionSpring.Settings.Servo.SpringSettings.StiffnessConstant = 300;
-            suspensionSpring.Settings.Servo.SpringSettings.DampingConstant = 70;
-
-            var revoluteAngularJoint = new RevoluteAngularJoint(baseBody, wheel.body, Vector3.Right);
-
             //Add the wheel and connection to the space.
             Game1.Instance.Space.Add(wheel.body);
             Game1.Instance.Children.Add(wheel);
-            Game1.Instance.Space.Add(pointOnLineJoint);
-            Game1.Instance.Space.Add(suspensionLimit);
-            //Game1.Instance.Space.Add(suspensionSpring);
-            Game1.Instance.Space.Add(revoluteAngularJoint);
+
+            return wheel.body;
         }
 
-        Entity AddDriveWheel(Vector3 wheelPosition, Entity boxBase, out RevoluteMotor drivingMotor, out RevoluteMotor steeringMotor)
+        Entity AddDriveWheel(Vector3 wheelPosition, Entity boxBase)
         {
             var wheel = new BepuEntity();
             wheel.modelName = "cyl";
@@ -229,51 +398,9 @@ namespace GamesAssignmentMars
             //Preventing the occasional pointless collision pair can speed things up.
             CollisionRules.AddRule(wheel.body, boxBase, CollisionRule.NoBroadPhase);
 
-            //Connect the wheel to the body.
-            var pointOnLineJoint = new PointOnLineJoint(boxBase, wheel.body, wheel.body.Position, Vector3.Down, wheel.body.Position);
-            var suspensionLimit = new LinearAxisLimit(boxBase, wheel.body, wheel.body.Position, wheel.body.Position, Vector3.Down, -1, 0);
-            //This linear axis motor will give the suspension its springiness by pushing the wheels outward.
-            var suspensionSpring = new LinearAxisMotor(boxBase, wheel.body, wheel.body.Position, wheel.body.Position, Vector3.Down);
-            suspensionSpring.Settings.Mode = MotorMode.Servomechanism;
-            suspensionSpring.Settings.Servo.Goal = 0;
-            suspensionSpring.Settings.Servo.SpringSettings.StiffnessConstant = 300;
-            suspensionSpring.Settings.Servo.SpringSettings.DampingConstant = 70;
-
-            var swivelHingeAngularJoint = new SwivelHingeAngularJoint(boxBase, wheel.body, Vector3.Up, Vector3.Right);
-            //Make the swivel hinge extremely rigid.  There are going to be extreme conditions when the wheels get up to speed;
-            //we don't want the forces involved to torque the wheel off the frame!
-            swivelHingeAngularJoint.SpringSettings.DampingConstant *= 1000;
-            swivelHingeAngularJoint.SpringSettings.StiffnessConstant *= 1000;
-            //Motorize the wheel.
-            drivingMotor = new RevoluteMotor(boxBase, wheel.body, Vector3.Left);
-            drivingMotor.Settings.VelocityMotor.Softness = .3f;
-            drivingMotor.Settings.MaximumForce = 100;
-            //Let it roll when the user isn't giving specific commands.
-            drivingMotor.IsActive = false;
-            steeringMotor = new RevoluteMotor(boxBase, wheel.body, Vector3.Up);
-            steeringMotor.Settings.Mode = MotorMode.Servomechanism;
-
-            steeringMotor.Basis.SetWorldAxes(Vector3.Up, Vector3.Right);
-            steeringMotor.TestAxis = Vector3.Right;
-
-
-            steeringMotor.Settings.Servo.SpringSettings.Advanced.UseAdvancedSettings = true;
-            steeringMotor.Settings.Servo.SpringSettings.Advanced.Softness = 0;
-            steeringMotor.Settings.Servo.SpringSettings.Advanced.ErrorReductionFactor = 0f;
-
-            var steeringConstraint = new RevoluteLimit(boxBase, wheel.body, Vector3.Up, Vector3.Right, -maximumTurnAngle, maximumTurnAngle);
-
-
             //Add the wheel and connection to the space.
             Game1.Instance.Space.Add(wheel.body);
             Game1.Instance.Children.Add(wheel);
-            Game1.Instance.Space.Add(pointOnLineJoint);
-            Game1.Instance.Space.Add(suspensionLimit);
-            Game1.Instance.Space.Add(suspensionSpring);
-            Game1.Instance.Space.Add(swivelHingeAngularJoint);
-            Game1.Instance.Space.Add(drivingMotor);
-            Game1.Instance.Space.Add(steeringMotor);
-            Game1.Instance.Space.Add(steeringConstraint);
 
             return wheel.body;
         }

@@ -23,12 +23,13 @@ namespace GamesAssignmentMars
 
         Random random = new Random();
         Space space;
-        Cylinder cameraCylindar;
+       // Cylinder cameraCylindar;
         float lastFired = 1.0f;
         SpriteBatch spriteBatch;
         private Ground ground = null;
         private Camera camera;
         List<GameEntity> children = new List<GameEntity>();
+        public MarsRover rover;
 
         public Space Space
         {
@@ -109,12 +110,14 @@ namespace GamesAssignmentMars
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             space = new Space();
-            space.ForceUpdater.Gravity = new Vector3(0, -9.81f, 0);
+            space.ForceUpdater.Gravity = new Vector3(0, -3.711f, 0);
 
-            cameraCylindar = new Cylinder(Camera.pos, 5, 5);
-            space.Add(cameraCylindar);
+            //cameraCylindar = new Cylinder(Camera.pos, 5, 5);
+            //space.Add(cameraCylindar);
+            children.Add(new StarsSphere());
             children.Add(new MarsTerrain());
-            children.Add(new MarsRover());
+            rover = new MarsRover();
+            children.Add(rover);
 
             foreach (GameEntity child in children)
             {
@@ -163,7 +166,7 @@ namespace GamesAssignmentMars
                 children[i].Update(gameTime);
             }
 
-            cameraCylindar.Position = camera.pos;
+           // cameraCylindar.Position = camera.pos;
             space.Update(timeDelta);
 
             base.Update(gameTime);
@@ -186,7 +189,7 @@ namespace GamesAssignmentMars
             }
             // Draw any lines
             Line.DrawLine(new Vector3(9, 10, 19), new Vector3(15, 10, 19), Color.Green);
-            Line.DrawLine(new Vector3(250, 0, -250), new Vector3(250, 70, -250), Color.Green);
+            //Line.DrawLine(new Vector3(250, 0, -250), new Vector3(250, 70, -250), Color.Green);
             Line.Draw();
 
             spriteBatch.End();            
