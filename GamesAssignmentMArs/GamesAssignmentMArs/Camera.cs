@@ -12,12 +12,8 @@ using Microsoft.Xna.Framework.Media;
 
 namespace GamesAssignmentMars
 {
-    /// <summary>
-    /// This is a game component that implements IUpdateable.
-    /// </summary>
     public class Camera : GameEntity
     {
-
         public Matrix projection;
         public Matrix view;
         private KeyboardState keyboardState;
@@ -38,13 +34,12 @@ namespace GamesAssignmentMars
 
         public Camera()
         {
-            pos = new Vector3(0.0f+248, 30.0f+34, 50.0f-250);
+            pos = new Vector3(248, 64, -200);
             look = new Vector3(0.0f, 0.0f, -1.0f);
         }
 
         public override void Update(GameTime gameTime)
         {
-
             float timeDelta = (float)(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
 
             keyboardState = Keyboard.GetState();
@@ -104,38 +99,38 @@ namespace GamesAssignmentMars
             {
                 if (keyboardState.IsKeyDown(Keys.W))
                 {
-                    Game1.Instance.rover.baseCameraJoint.Motor.Settings.Servo.Goal -= 1 * 0.01f;
+                    Game1.Instance.Rover.baseCameraJoint.Motor.Settings.Servo.Goal -= 1 * 0.01f;
                     Matrix T = Matrix.CreateRotationY(-0.01f);
-                    Game1.Instance.rover.laserLook = Vector3.Transform(Game1.Instance.rover.laserLook, T);
-                    look = Vector3.Transform(Game1.Instance.rover.laserLook, T);
-                    pos = Game1.Instance.rover.cameraLaser.body.Position + (Game1.Instance.rover.laserLook * 3);
+                    Game1.Instance.Rover.laserLook = Vector3.Transform(Game1.Instance.Rover.laserLook, T);
+                    look = Vector3.Transform(Game1.Instance.Rover.laserLook, T);
+                    pos = Game1.Instance.Rover.cameraLaser.body.Position + (Game1.Instance.Rover.laserLook * 3);
                 }
 
                 if (keyboardState.IsKeyDown(Keys.S))
                 {
-                    Game1.Instance.rover.baseCameraJoint.Motor.Settings.Servo.Goal += 1 * 0.01f;
+                    Game1.Instance.Rover.baseCameraJoint.Motor.Settings.Servo.Goal += 1 * 0.01f;
                     Matrix T = Matrix.CreateRotationY(0.01f);
-                    Game1.Instance.rover.laserLook = Vector3.Transform(Game1.Instance.rover.laserLook, T);
-                    look = Vector3.Transform(Game1.Instance.rover.laserLook, T);
-                    pos = Game1.Instance.rover.cameraLaser.body.Position + (Game1.Instance.rover.laserLook * 3);
+                    Game1.Instance.Rover.laserLook = Vector3.Transform(Game1.Instance.Rover.laserLook, T);
+                    look = Vector3.Transform(Game1.Instance.Rover.laserLook, T);
+                    pos = Game1.Instance.Rover.cameraLaser.body.Position + (Game1.Instance.Rover.laserLook * 3);
                 }
 
                 if (keyboardState.IsKeyDown(Keys.A))
                 {
-                    Game1.Instance.rover.tester.Motor.Settings.Servo.Goal += 1 * 0.01f;
+                    Game1.Instance.Rover.tester.Motor.Settings.Servo.Goal += 1 * 0.01f;
                     Matrix T = Matrix.CreateFromAxisAngle(right, 0.01f);//rotating around the right vector.
-                    Game1.Instance.rover.laserLook = Vector3.Transform(Game1.Instance.rover.laserLook, T);
-                    look = Vector3.Transform(Game1.Instance.rover.laserLook, T);
-                    pos = Game1.Instance.rover.cameraLaser.body.Position + (Game1.Instance.rover.laserLook * 3);
+                    Game1.Instance.Rover.laserLook = Vector3.Transform(Game1.Instance.Rover.laserLook, T);
+                    look = Vector3.Transform(Game1.Instance.Rover.laserLook, T);
+                    pos = Game1.Instance.Rover.cameraLaser.body.Position + (Game1.Instance.Rover.laserLook * 3);
                 }
 
                 if (keyboardState.IsKeyDown(Keys.D))
                 {
-                    Game1.Instance.rover.tester.Motor.Settings.Servo.Goal -= 1 * 0.01f;
+                    Game1.Instance.Rover.tester.Motor.Settings.Servo.Goal -= 1 * 0.01f;
                     Matrix T = Matrix.CreateFromAxisAngle(right,-0.01f);//rotating around the right vector.
-                    Game1.Instance.rover.laserLook = Vector3.Transform(Game1.Instance.rover.laserLook, T);
-                    look = Vector3.Transform(Game1.Instance.rover.laserLook, T);
-                    pos = Game1.Instance.rover.cameraLaser.body.Position + (Game1.Instance.rover.laserLook * 3);
+                    Game1.Instance.Rover.laserLook = Vector3.Transform(Game1.Instance.Rover.laserLook, T);
+                    look = Vector3.Transform(Game1.Instance.Rover.laserLook, T);
+                    pos = Game1.Instance.Rover.cameraLaser.body.Position + (Game1.Instance.Rover.laserLook * 3);
                 }
             }
 

@@ -8,7 +8,7 @@ using BEPUphysics.MathExtensions;
 
 namespace GamesAssignmentMars
 {
-    class MarsTerrain:GameEntity
+    public class MarsTerrain:GameEntity
     {
         SpriteBatch spriteBatch;
         GraphicsDevice device;
@@ -37,8 +37,8 @@ namespace GamesAssignmentMars
         IndexBuffer myIndexBuffer;
 
         private float angle = 0f;
-        private int terrainWidth = 4;
-        private int terrainHeight = 3;
+        public int terrainWidth = 4;
+        public int terrainHeight = 3;
         private float[,] heightData;
 
         public override void Update(GameTime gameTime)
@@ -136,7 +136,6 @@ namespace GamesAssignmentMars
                 vertices[i].Normal.Normalize();
         }
 
-
         private void LoadHeightData(Texture2D heightMap)
         {
             terrainWidth = heightMap.Width;
@@ -172,7 +171,6 @@ namespace GamesAssignmentMars
                     ));
             
              Game1.Instance.Space.Add(bepuTerrain);
-             //XNAGame.Instance.ModelDrawer.Add(bepuTerrain);
         }
 
         public override void LoadContent()
@@ -187,9 +185,7 @@ namespace GamesAssignmentMars
             SetUpIndices();
             CalculateNormals();
 
-            CopyToBuffers();
-
-            
+            CopyToBuffers();          
         }
 
 
@@ -202,7 +198,7 @@ namespace GamesAssignmentMars
             viewMatrix = Game1.Instance.Camera.getView();
             projectionMatrix = Game1.Instance.Camera.getProjection();
 
-            Matrix worldMatrix = Matrix.Identity;// (-terrainWidth / 2.0f, 0, terrainHeight / 2.0f) * Matrix.CreateRotationY(angle);
+            Matrix worldMatrix = Matrix.Identity;
             effect.CurrentTechnique = effect.Techniques["Colored"];
             effect.Parameters["xView"].SetValue(viewMatrix);
             effect.Parameters["xProjection"].SetValue(projectionMatrix);

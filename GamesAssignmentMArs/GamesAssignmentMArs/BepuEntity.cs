@@ -10,7 +10,6 @@ namespace GamesAssignmentMars
     {
         public BEPUphysics.Entities.Entity body;
 
-
         public override void LoadContent()
         {
             base.LoadContent();
@@ -19,7 +18,6 @@ namespace GamesAssignmentMars
         public override void Update(GameTime gameTime)
         {
             worldTransform = body.WorldTransform;
-
         }
 
     }

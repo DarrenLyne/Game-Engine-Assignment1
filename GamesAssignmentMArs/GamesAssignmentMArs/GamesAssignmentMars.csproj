@@ -114,7 +114,6 @@
     <Compile Include="Camera.cs" />
     <Compile Include="Explosion.cs" />
     <Compile Include="GameEntity.cs" />
-    <Compile Include="Ground.cs" />
     <Compile Include="Lazer.cs" />
     <Compile Include="Line.cs" />
     <Compile Include="MarsRover.cs" />

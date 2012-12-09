@@ -23,13 +23,12 @@ namespace GamesAssignmentMars
 
         Random random = new Random();
         Space space;
-       // Cylinder cameraCylindar;
         float lastFired = 1.0f;
         SpriteBatch spriteBatch;
-        private Ground ground = null;
         private Camera camera;
         List<GameEntity> children = new List<GameEntity>();
-        public MarsRover rover;
+        MarsRover rover;
+        MarsTerrain terrain;
 
         public Space Space
         {
@@ -41,18 +40,6 @@ namespace GamesAssignmentMars
         {
             get { return graphics; }
             set { graphics = value; }
-        }
-
-        public SpriteBatch SpriteBatch1
-        {
-            get { return spriteBatch; }
-            set { spriteBatch = value; }
-        }
-
-        public Ground Ground
-        {
-            get { return ground; }
-            set { ground = value; }
         }
 
         public SpriteBatch SpriteBatch
@@ -71,6 +58,18 @@ namespace GamesAssignmentMars
         {
             get { return Game1.instance; }
             set { Game1.instance = value; }
+        }
+
+        public MarsRover Rover
+        {
+            get { return rover; }
+            set { rover = value; }
+        }
+
+        public MarsTerrain Terrain
+        {
+            get { return terrain; }
+            set { terrain = value; }
         }
 
         public Game1()
@@ -94,11 +93,8 @@ namespace GamesAssignmentMars
             int midX = GraphicsDeviceManager.DefaultBackBufferHeight / 2;
             int midY = GraphicsDeviceManager.DefaultBackBufferWidth / 2;
             Mouse.SetPosition(midX, midY);
-
-                                   
+                    
             children.Add(camera);
-            ground = new Ground();                        
-            children.Add(ground);
 
             base.Initialize();
         }
@@ -112,10 +108,9 @@ namespace GamesAssignmentMars
             space = new Space();
             space.ForceUpdater.Gravity = new Vector3(0, -3.711f, 0);
 
-            //cameraCylindar = new Cylinder(Camera.pos, 5, 5);
-            //space.Add(cameraCylindar);
             children.Add(new StarsSphere());
-            children.Add(new MarsTerrain());
+            terrain = new MarsTerrain();
+            children.Add(terrain);
             rover = new MarsRover();
             children.Add(rover);
 
@@ -188,8 +183,6 @@ namespace GamesAssignmentMars
                 child.Draw(gameTime);
             }
             // Draw any lines
-            Line.DrawLine(new Vector3(9, 10, 19), new Vector3(15, 10, 19), Color.Green);
-            //Line.DrawLine(new Vector3(250, 0, -250), new Vector3(250, 70, -250), Color.Green);
             Line.Draw();
 
             spriteBatch.End();            
