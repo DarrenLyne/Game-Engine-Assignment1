@@ -42,3 +42,5 @@ C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\
 C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\SphereHighPoly.xnb
 C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\mar0kuu2.xnb
 C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\laser.xnb
+C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\lasershot.xnb
+C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\explosion-01.xnb

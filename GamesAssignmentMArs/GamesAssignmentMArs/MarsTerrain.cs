@@ -6,6 +6,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using BEPUphysics.MathExtensions;
 
+/* Code taken from XNA-Bepu-Terrain demo provided during the module and adapted for this assignment
+ * Edited the height map being used, the one being used is taken from NASA website
+ * Link for height map in my blog about assignment
+ * Also edited colours of the height map*/
 namespace GamesAssignmentMars
 {
     public class MarsTerrain:GameEntity
@@ -36,9 +40,8 @@ namespace GamesAssignmentMars
         VertexBuffer myVertexBuffer;
         IndexBuffer myIndexBuffer;
 
-        private float angle = 0f;
-        public int terrainWidth = 4;
-        public int terrainHeight = 3;
+        public int terrainWidth;
+        public int terrainHeight;
         private float[,] heightData;
 
         public override void Update(GameTime gameTime)
@@ -68,13 +71,13 @@ namespace GamesAssignmentMars
                     vertices[x + y * terrainWidth].Position = new Vector3(x, heightData[x, y], -y);
 
                     if (heightData[x, y] < minHeight + (maxHeight - minHeight) / 4)
-                        vertices[x + y * terrainWidth].Color = Color.AntiqueWhite;
+                        vertices[x + y * terrainWidth].Color = Color.DarkOrange;//changed colour
                     else if (heightData[x, y] < minHeight + (maxHeight - minHeight) * 2 / 4)
-                        vertices[x + y * terrainWidth].Color = Color.OrangeRed;
+                        vertices[x + y * terrainWidth].Color = Color.OrangeRed;//changed colour
                     else if (heightData[x, y] < minHeight + (maxHeight - minHeight) * 3 / 4)
-                        vertices[x + y * terrainWidth].Color = Color.OrangeRed;
+                        vertices[x + y * terrainWidth].Color = Color.OrangeRed;//changed colour
                     else
-                        vertices[x + y * terrainWidth].Color = Color.OrangeRed;
+                        vertices[x + y * terrainWidth].Color = Color.OrangeRed;//changed colour
                 }
             }
         }
@@ -179,7 +182,7 @@ namespace GamesAssignmentMars
             spriteBatch = Game1.Instance.SpriteBatch;
             effect = Game1.Instance.Content.Load<Effect>("effects");
 
-            Texture2D heightMap = Game1.Instance.Content.Load<Texture2D>("mar0kuu2"); 
+            Texture2D heightMap = Game1.Instance.Content.Load<Texture2D>("mar0kuu2"); //section of mars height map taken from nasa
             LoadHeightData(heightMap);
             SetUpVertices();
             SetUpIndices();

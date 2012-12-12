@@ -15,3 +15,5 @@ Content\mar0kuu2.xnb
 Content\effects.xnb
 Content\SkySphere.xnb
 Content\laser.xnb
+Content\lasershot.xnb
+Content\explosion-01.xnb

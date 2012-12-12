@@ -6,8 +6,10 @@ using BEPUphysics.NarrowPhaseSystems.Pairs;
 using Microsoft.Xna.Framework.Audio;
 namespace GamesAssignmentMars
 {
+    //Code was in starter code for this assignment
     public class  BepuEntity : GameEntity
     {
+
         public BEPUphysics.Entities.Entity body;
 
         public override void LoadContent()

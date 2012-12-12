@@ -12,286 +12,256 @@ using BEPUphysics.Constraints.TwoEntity.Joints;
 using BEPUphysics.Constraints.TwoEntity.JointLimits;
 using BEPUphysics.Entities;
 using BEPUphysics.DeactivationManagement;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace GamesAssignmentMars
 {
     public class MarsRover: BepuEntity
     {
-        public RevoluteJoint baseCameraJoint;
-        RevoluteJoint baseDrillJoint;
-        public RevoluteJoint tester;
-        private  RevoluteMotor drivingMotor1;
-        private readonly RevoluteMotor drivingMotor2;
-        private  RevoluteMotor steeringMotor1;
-        private readonly RevoluteMotor steeringMotor2;
-        public BepuEntity cameraLaser = new BepuEntity();
-        BepuEntity baseBox = new BepuEntity();
+        public BepuEntity cameraLaserContainer;//camera & laser container
+        BepuEntity roverBody;//base body for mars rover
+        BepuEntity cameraArm;//cylinder that camera & laser wil be on top of
+        BepuEntity drillArm;//cylinder that willhold the drill
+
         private float maximumTurnAngle = MathHelper.Pi * .2f;
         private float driveSpeed = 1000;
+        float fireRate = 1.0f;
+        float elapsed = 1000.0f; // Set this to a high number so it lets me start firing straight away...
+        public bool exploded = false;// holds the state of if the rover has exploded or not5
+        MarsRoverMovement roverMovement = new MarsRoverMovement();
+        private SoundEffect laserShot;
+        private SoundEffect explosionSound;
 
-        List<RevoluteJoint> roverJoints = new List<RevoluteJoint>();
-        List<Motor> motors = new List<Motor>();
-        List<LinearAxisMotor> suspensionSprings = new List<LinearAxisMotor>();
-        List<Joint> joints = new List<Joint>();
 
         public MarsRover(): base()
         {
-            BepuEntity cameraArm = new BepuEntity();
-            BepuEntity drillArm = new BepuEntity();
+            laserShot = Game1.Instance.Content.Load<SoundEffect>("lasershot");
+            explosionSound = Game1.Instance.Content.Load<SoundEffect>("explosion-01");
+            cameraArm = new BepuEntity();
+            drillArm = new BepuEntity();
 
-            baseBox.modelName = "cube";
-            baseBox.LoadContent();
-            baseBox.localTransform = Matrix.CreateScale(new Vector3(15, 5, 20));
-            baseBox.body = new Box(new Vector3(260, 45, -260), 15, 5, 20);
-            baseBox.body.BecomeDynamic(100);
-            baseBox.body.CollisionInformation.LocalPosition = new Vector3(0, .8f, 0);
-            baseBox.diffuse = new Vector3(0.5f, 0.5f, 0.5f);
-            Game1.Instance.Space.Add(baseBox.body);
-            Game1.Instance.Children.Add(baseBox);
+            //construct mars rover ase body
+            roverBody = new BepuEntity();
+            roverBody.modelName = "cube";
+            roverBody.LoadContent();
+            roverBody.localTransform = Matrix.CreateScale(new Vector3(15, 5, 20));
+            roverBody.body = new Box(new Vector3(260, 45, -260), 15, 5, 20);
+            roverBody.body.BecomeDynamic(100);
+            roverBody.body.CollisionInformation.LocalPosition = new Vector3(0, .8f, 0);
+            roverBody.diffuse = new Vector3(0.5f, 0.5f, 0.5f);
+            Game1.Instance.Space.Add(roverBody.body);
+            Game1.Instance.Children.Add(roverBody);
 
+            //create arms to hold both drill and camera/laser
             drillArm = AddCylinder("cylinder",new Vector3(267, 44, -244), false);
             cameraArm = AddCylinder("cylinder",new Vector3(254, 54, -252), true);
 
-            CreateRevoluteJoint(out baseDrillJoint, baseBox, drillArm, new Vector3(267, 44, -250), 3500, Vector3.Right);
-            roverJoints.Add(baseDrillJoint);
+            //Create joint between rover body and drill arm
+            roverMovement.CreateRevoluteJoint(out roverMovement.bodyDrillJoint, roverBody, drillArm, new Vector3(267, 44, -250), 3500, Vector3.Right);
+            roverMovement.roverJoints.Add(roverMovement.bodyDrillJoint);
 
-            CreateRevoluteJoint(out baseCameraJoint, baseBox, cameraArm, cameraArm.body.Position, 1500, Vector3.Up);
-            roverJoints.Add(baseCameraJoint);
+            //Create joint between rover body and camera/laser arm
+            roverMovement.CreateRevoluteJoint(out roverMovement.bodyCameraCylinderJoint, roverBody, cameraArm, cameraArm.body.Position, 1500, Vector3.Up);
+            roverMovement.roverJoints.Add(roverMovement.bodyCameraCylinderJoint);
 
-            cameraLaser=AddCylinder("cube",new Vector3(254, 61, -252), true);
+            //create container for camera/laser
+            cameraLaserContainer=AddCylinder("cube",new Vector3(254, 61, -252), true);
 
-            CreateRevoluteJoint(out tester, cameraArm, cameraLaser, cameraLaser.body.Position, 2500, -Vector3.Right);
-            roverJoints.Add(tester);
+            //Create joint between camera/laser arm and container for camera/laser
+            roverMovement.CreateRevoluteJoint(out roverMovement.cameraLaserContainerXaxisRotation, cameraArm, cameraLaserContainer, cameraLaserContainer.body.Position, 2500, -Vector3.Right);
+            roverMovement.roverJoints.Add(roverMovement.cameraLaserContainerXaxisRotation);
 
-            Entity backWheel1 = AddBackWheel(new Vector3(251, 40, -267), baseBox.body);
-            ConnectWheelBody(backWheel1);
+            //create the four back wheels of the rover and connect them to the body
+            Entity backWheel1 = AddWheel(new Vector3(250, 42, -267), roverBody.body);
+            roverMovement.ConnectWheelBody(backWheel1, roverBody);
+            Entity backWheel2 = AddWheel(new Vector3(270, 42, -267), roverBody.body);
+            roverMovement.ConnectWheelBody(backWheel2, roverBody);
+            Entity backWheel3 = AddWheel(new Vector3(250, 42, -260), roverBody.body);
+            roverMovement.ConnectWheelBody(backWheel3,roverBody);
+            Entity backWheel4 = AddWheel(new Vector3(270, 42, -260), roverBody.body);
+            roverMovement.ConnectWheelBody(backWheel4, roverBody);
 
-            Entity backWheel2 = AddBackWheel(new Vector3(269, 40, -267), baseBox.body);
-            ConnectWheelBody(backWheel2);
-
-           // AddBackWheel(new Vector3(-7, 4, 10), baseBox.body);
-            //AddBackWheel(new Vector3(11, 4, 10), baseBox.body);
-            var wheel1 = AddDriveWheel(new Vector3(269, 40, -257), baseBox.body);
-            SetUpFrontMotorWheels(wheel1, out drivingMotor1,out steeringMotor1);
-
-            var wheel2 = AddDriveWheel(new Vector3(251, 40, -257), baseBox.body);
-            SetUpFrontMotorWheels(wheel2, out drivingMotor2, out steeringMotor2);
+            //Create the two driving wheels and connect them to the body
+            var wheel1 = AddWheel(new Vector3(270, 42, -255), roverBody.body);
+            roverMovement.SetUpFrontMotorWheels(roverBody,wheel1, out roverMovement.drivingMotor1, out roverMovement.steeringMotor1);
+            var wheel2 = AddWheel(new Vector3(250, 42, -255), roverBody.body);
+            roverMovement.SetUpFrontMotorWheels(roverBody,wheel2, out roverMovement.drivingMotor2, out roverMovement.steeringMotor2);
 
             var steeringStabilizer = new RevoluteAngularJoint(wheel1, wheel2, Vector3.Right);
             Game1.Instance.Space.Add(steeringStabilizer);
         }
 
-        private void SetUpFrontMotorWheels(Entity wheel1,out RevoluteMotor drivingMotor, out RevoluteMotor steeringMotor)
-        {
-            //Connect the wheel to the body.
-            PointOnLineJoint pointOnLineJoint = new PointOnLineJoint(baseBox.body, wheel1, wheel1.Position, Vector3.Down, wheel1.Position);
-            LinearAxisLimit suspensionLimit = new LinearAxisLimit(baseBox.body, wheel1, wheel1.Position, wheel1.Position, Vector3.Down, -1, 0);
-            //This linear axis motor will give the suspension its springiness by pushing the wheels outward.
-            CreateSuspensionString(baseBox, wheel1);
-
-            SwivelHingeAngularJoint swivelHingeAngularJoint = new SwivelHingeAngularJoint(baseBox.body, wheel1, Vector3.Up, Vector3.Right);
-            //Make the swivel hinge extremely rigid.  There are going to be extreme conditions when the wheels get up to speed;
-            //we don't want the forces involved to torque the wheel off the frame!
-            swivelHingeAngularJoint.SpringSettings.DampingConstant *= 1000;
-            swivelHingeAngularJoint.SpringSettings.StiffnessConstant *= 1000;
-            //Motorize the wheel.
-            drivingMotor = new RevoluteMotor(baseBox.body, wheel1, Vector3.Left);
-            drivingMotor.Settings.VelocityMotor.Softness = .3f;
-            drivingMotor.Settings.MaximumForce = 100;
-            //Let it roll when the user isn't giving specific commands.
-            drivingMotor.IsActive = false;
-            steeringMotor = new RevoluteMotor(baseBox.body, wheel1, Vector3.Up);
-            steeringMotor.Settings.Mode = MotorMode.Servomechanism;
-
-            steeringMotor.Basis.SetWorldAxes(Vector3.Up, Vector3.Right);
-            steeringMotor.TestAxis = Vector3.Right;
-
-            steeringMotor.Settings.Servo.SpringSettings.Advanced.UseAdvancedSettings = true;
-            steeringMotor.Settings.Servo.SpringSettings.Advanced.Softness = 0;
-            steeringMotor.Settings.Servo.SpringSettings.Advanced.ErrorReductionFactor = 0f;
-
-            var steeringConstraint = new RevoluteLimit(baseBox.body, wheel1, Vector3.Up, Vector3.Right, -maximumTurnAngle, maximumTurnAngle);
-
-            Game1.Instance.Space.Add(pointOnLineJoint);
-            Game1.Instance.Space.Add(suspensionLimit);
-            Game1.Instance.Space.Add(swivelHingeAngularJoint);
-            Game1.Instance.Space.Add(drivingMotor);
-            Game1.Instance.Space.Add(steeringMotor);
-            Game1.Instance.Space.Add(steeringConstraint);
-            joints.Add(pointOnLineJoint);
-            joints.Add(suspensionLimit);
-            joints.Add(swivelHingeAngularJoint);
-            motors.Add(drivingMotor);
-            motors.Add(steeringMotor);
-        }
-        private void ConnectWheelBody(Entity backWheel)
-        {
-            //Connect the wheel to the body.
-            PointOnLineJoint pointOnLineJoint = new PointOnLineJoint(baseBox.body, backWheel, backWheel.Position, Vector3.Down, backWheel.Position);
-            LinearAxisLimit suspensionLimit = new LinearAxisLimit(baseBox.body, backWheel, backWheel.Position, backWheel.Position, Vector3.Down, -1, 0);
-            //This linear axis motor will give the suspension its springiness by pushing the wheels outward.
-            CreateSuspensionString(baseBox, backWheel);
-
-            RevoluteAngularJoint revoluteAngularJoint = new RevoluteAngularJoint(baseBox.body, backWheel, Vector3.Right);
-
-            Game1.Instance.Space.Add(pointOnLineJoint);
-            Game1.Instance.Space.Add(suspensionLimit);
-            Game1.Instance.Space.Add(revoluteAngularJoint);
-            joints.Add(pointOnLineJoint);
-            joints.Add(suspensionLimit);
-            joints.Add(revoluteAngularJoint);
-
-        }
-
-        private void CreateSuspensionString(BepuEntity connectionA, Entity connectionB)
-        {
-            LinearAxisMotor suspensionSpring = new LinearAxisMotor(baseBox.body, connectionB, connectionB.Position, connectionB.Position, Vector3.Down);
-            suspensionSpring.Settings.Mode = MotorMode.Servomechanism;
-            suspensionSpring.Settings.Servo.Goal = 0;
-            suspensionSpring.Settings.Servo.SpringSettings.StiffnessConstant = 300;
-            suspensionSpring.Settings.Servo.SpringSettings.DampingConstant = 70;
-            Game1.Instance.Space.Add(suspensionSpring);
-            suspensionSprings.Add(suspensionSpring);
-        }
-        private void CreateRevoluteJoint(out RevoluteJoint joint,BepuEntity connectionA,BepuEntity connectionB,Vector3 anchor,int maxForce,Vector3 freeAxis)
-        {
-            joint = new RevoluteJoint(connectionA.body, connectionB.body, anchor, freeAxis);
-            joint.Motor.IsActive = true;
-            joint.Motor.Settings.Mode = MotorMode.Servomechanism;
-            joint.Motor.Settings.MaximumForce = maxForce;
-            Game1.Instance.Space.Add(joint);
-        }
-
         public override void LoadContent()
         {
         }
-        public Vector3 laserLook = new Vector3(-0.2f, 0, 1);
-        public void RotationYAxis(float angle)
-        {
-            baseCameraJoint.Motor.Settings.Servo.Goal += 1 * angle;
-            Matrix T = Matrix.CreateRotationY(-0.01f);
-            laserLook = Vector3.Transform(laserLook, T);
-        }
-        public void RotationXAxis(float angle)
-        {
-            tester.Motor.Settings.Servo.Goal += 1 * angle;
-            Matrix T = Matrix.CreateFromAxisAngle(right, -0.01f);//rotating around the right vector.
-            laserLook = Vector3.Transform(laserLook, T);
-        }
+
 
         public override void Update(GameTime gameTime)
         {
             KeyboardState keyState = Keyboard.GetState();
-            if (keyState.IsKeyDown(Keys.N))
+            if (!Game1.Instance.Camera.isRoverCamera)
             {
-                RotationYAxis(-0.01f);
+                if (keyState.IsKeyDown(Keys.B))
+                {
+                    roverMovement.RotationCameraLaserYAxis(-0.01f);
+                }
+                if (keyState.IsKeyDown(Keys.M))
+                {
+                    roverMovement.RotationCameraLaserYAxis(0.01f);
+                }
+                if (keyState.IsKeyDown(Keys.H))
+                {
+                    // So the camera/laser can only look up a certain amount
+                    if (roverMovement.cameraLaserContainerXaxisRotation.Motor.Settings.Servo.Goal >= -maximumTurnAngle)
+                    {
+                        roverMovement.RotationXAxis(-0.01f, right);
+                    }
+                }
+                if (keyState.IsKeyDown(Keys.N))
+                {
+                    // So the camera/laser can only look down a certain amount
+                    if (roverMovement.cameraLaserContainerXaxisRotation.Motor.Settings.Servo.Goal <= maximumTurnAngle)
+                    {
+                        roverMovement.RotationXAxis(0.01f, right);
+                    }
+                }
             }
-            if (keyState.IsKeyDown(Keys.M))
+
+            if(keyState.IsKeyDown(Keys.F))
             {
-                RotationYAxis(0.01f);
-            }
-            if (keyState.IsKeyDown(Keys.B))
-            {
-                RotationXAxis(-0.01f);
+                //the drill cylinder looks up
+                roverMovement.bodyDrillJoint.Motor.Settings.Servo.Goal -= 1 * 0.01f;
             }
             if (keyState.IsKeyDown(Keys.V))
-            {
-                RotationXAxis(0.01f);
-            }
-            if(keyState.IsKeyDown(Keys.C))
-            {
-                baseDrillJoint.Motor.Settings.Servo.Goal -= 1 * 0.01f;
+            {   //the drill cylinder looks down
+                roverMovement.bodyDrillJoint.Motor.Settings.Servo.Goal += 1 * 0.01f;
             }
 
             if(keyState.IsKeyDown(Keys.Space))
             {
+                //create the laser to shoot & add to game
                 Lazer laser = new Lazer();
-                laser.pos = cameraLaser.body.Position;
-                laser.look = laserLook;
+                laserShot.Play();
+                laser.pos = cameraLaserContainer.body.Position;
+                laser.look = GetLaserLook();
                 Game1.Instance.Children.Add(laser);
             }
 
-            ////Scale the corrective velocity by the wheel angular velocity to compensate for a long time step duration.
-            ////If the simulation is running at a fast time step, this is probably not necessary.
-            steeringMotor1.Settings.Servo.BaseCorrectiveSpeed = 3 + 7 * Math.Min(steeringMotor1.ConnectionB.AngularVelocity.Length() / 100, 1);
-            steeringMotor2.Settings.Servo.BaseCorrectiveSpeed = 3 + 7 * Math.Min(steeringMotor2.ConnectionB.AngularVelocity.Length() / 100, 1);
-            if (keyState.IsKeyDown(Keys.H))
+            //code taken from bepu physics demo suspensioncardemo.cs and adapted for this project
+            roverMovement.steeringMotor1.Settings.Servo.BaseCorrectiveSpeed = 3 + 7 * Math.Min(roverMovement.steeringMotor1.ConnectionB.AngularVelocity.Length() / 100, 1);
+            roverMovement.steeringMotor2.Settings.Servo.BaseCorrectiveSpeed = 3 + 7 * Math.Min(roverMovement.steeringMotor2.ConnectionB.AngularVelocity.Length() / 100, 1);
+
+            if (keyState.IsKeyDown(Keys.Down))
             {
-                MoveForwardBackward(-driveSpeed);
+                //move rover backward
+                roverMovement.MoveForwardBackward(-driveSpeed);
+                if (Game1.Instance.Camera.isRoverCamera)
+                {
+                    Game1.Instance.Camera.look = GetLaserLook();
+                    Game1.Instance.Camera.pos = new Vector3(cameraLaserContainer.body.Position.X, cameraLaserContainer.body.Position.Y, cameraLaserContainer.body.Position.Z) + (GetLaserLook() * 3);
+                }
             }
-            else if (keyState.IsKeyDown(Keys.J))
+            else if (keyState.IsKeyDown(Keys.Up))
             {
-                MoveForwardBackward(driveSpeed);
+                //move rover forward
+                roverMovement.MoveForwardBackward(driveSpeed);
+                if (Game1.Instance.Camera.isRoverCamera)
+                {
+                    Game1.Instance.Camera.look = GetLaserLook();
+                    Game1.Instance.Camera.pos = new Vector3(cameraLaserContainer.body.Position.X, cameraLaserContainer.body.Position.Y, cameraLaserContainer.body.Position.Z) + (GetLaserLook() * 3);
+                }
             }
             else
             {
-                SetMotorActive(false);
+                //turn driving motor off
+                roverMovement.SetMotorActive(false);
             }
 
-            if (keyState.IsKeyDown(Keys.K))
+            if (keyState.IsKeyDown(Keys.Left))
             {
-                TurnLeftRight(maximumTurnAngle);
+                //turn rover left
+                roverMovement.TurnLeftRight(maximumTurnAngle);
+                if (Game1.Instance.Camera.isRoverCamera)
+                {
+                    Game1.Instance.Camera.RotateAroundYAxis(0.01f);
+                    Game1.Instance.Camera.look = GetLaserLook();
+                    Game1.Instance.Camera.pos = new Vector3(cameraLaserContainer.body.Position.X, cameraLaserContainer.body.Position.Y, cameraLaserContainer.body.Position.Z) + (GetLaserLook() * 3);
+                }
             }
-            else if (keyState.IsKeyDown(Keys.L))
+            else if (keyState.IsKeyDown(Keys.Right))
             {
-                TurnLeftRight(-maximumTurnAngle);
+                //turn rover right
+                roverMovement.TurnLeftRight(-maximumTurnAngle);
+                if (Game1.Instance.Camera.isRoverCamera)
+                {
+                    Game1.Instance.Camera.RotateAroundYAxis(-0.01f);
+                    Game1.Instance.Camera.look = GetLaserLook();
+                    Game1.Instance.Camera.pos = new Vector3(cameraLaserContainer.body.Position.X, cameraLaserContainer.body.Position.Y, cameraLaserContainer.body.Position.Z) + (GetLaserLook() * 3);
+                }
             }
             else
             {
                 //Face forward
-                steeringMotor1.Settings.Servo.Goal = 0;
-                steeringMotor2.Settings.Servo.Goal = 0;
+                roverMovement.steeringMotor1.Settings.Servo.Goal = 0;
+                roverMovement.steeringMotor2.Settings.Servo.Goal = 0;
             }
 
             if (keyState.IsKeyDown(Keys.P))
             {
-                Game1.Instance.Camera.look = laserLook;
-                Game1.Instance.Camera.pos = new Vector3(cameraLaser.body.Position.X, cameraLaser.body.Position.Y, cameraLaser.body.Position.Z) + (laserLook*3);
-                Game1.Instance.Camera.isRoverCamera = true;
-
+                if (elapsed > (1.0f / fireRate))
+                {
+                    //Change to or out of the rovers camera
+                    if (Game1.Instance.Camera.isRoverCamera == false)
+                    {
+                        //set look vector and position of camera and if it is rover camera, changes controls if it is
+                        Game1.Instance.Camera.look = GetLaserLook();
+                        Game1.Instance.Camera.pos = new Vector3(cameraLaserContainer.body.Position.X, cameraLaserContainer.body.Position.Y, cameraLaserContainer.body.Position.Z) + (GetLaserLook() * 3);
+                        Game1.Instance.Camera.isRoverCamera = true;
+                    }
+                    else
+                    {
+                        //put camera back to normal
+                        Game1.Instance.Camera.pos = new Vector3(248, 64, -200);
+                        Game1.Instance.Camera.look = new Vector3(0.0f, 0.0f, -1.0f);
+                        Game1.Instance.Camera.isRoverCamera = false;
+                    }
+                    elapsed = 0.0f;
+                }
             }
-            if (keyState.IsKeyDown(Keys.I))
+            elapsed += (float) gameTime.ElapsedGameTime.TotalSeconds;
+            if (elapsed >= 25.0f)
             {
-                Explosion kapowMaker = new Explosion(Vector3.Zero, 400, 15, Game1.Instance.Space);
-                //Detonate the bomb
-                kapowMaker.Position = baseBox.body.Position;
+                elapsed = 25.0f;
+            }
+            if (keyState.IsKeyDown(Keys.E))
+            {
+                //set the rover to explode
+                if (!exploded)
+                {
+                    Explosion createExplosion = new Explosion(Vector3.Zero, 4000, 30, Game1.Instance.Space);
+                    createExplosion.Position = roverBody.body.Position;
 
-                foreach (RevoluteJoint joint in roverJoints)
-                    joint.IsActive = false;
+                    //disable all the joints
+                    foreach (RevoluteJoint joint in roverMovement.roverJoints)
+                        joint.IsActive = false;
+                    foreach (var suspensionString in roverMovement.suspensionSprings)
+                        suspensionString.IsActive = false;
+                    foreach (var joint in roverMovement.joints)
+                        joint.IsActive = false;
+                    foreach (var motor in roverMovement.motors)
+                        motor.IsActive = false;
 
-                foreach (var suspensionString in suspensionSprings)
-                    suspensionString.IsActive = false;
-
-                foreach (var joint in joints)
-                    joint.IsActive = false;
-                foreach (var motor in motors)
-                    motor.IsActive = false;
-
-                kapowMaker.Explode();
+                    //start the explosion
+                    createExplosion.Explode();
+                    explosionSound.Play();
+                    exploded = true;
+                }
             }
 
         }
 
-        private void TurnLeftRight(float turnAngle)
-        {
-            steeringMotor1.Settings.Servo.Goal = turnAngle;
-            steeringMotor2.Settings.Servo.Goal = turnAngle;
-        }
-
-        private void MoveForwardBackward(float speed)
-        {
-            drivingMotor1.Settings.VelocityMotor.GoalVelocity = speed;
-            drivingMotor2.Settings.VelocityMotor.GoalVelocity = speed;
-            SetMotorActive(true);
-        }
-
-        private void SetMotorActive(bool isActive)
-        {
-            drivingMotor1.IsActive = isActive;
-            drivingMotor2.IsActive = isActive;
-        }
-
-        Entity AddBackWheel(Vector3 wheelPosition,Entity baseBody)
+        Entity AddWheel(Vector3 wheelPosition,Entity baseBody)
         {
             var wheel = new BepuEntity();
             wheel.modelName = "cyl";
@@ -301,30 +271,10 @@ namespace GamesAssignmentMars
             wheel.body.Material.KineticFriction = 2.5f;
             wheel.body.Material.StaticFriction = 2.5f;
             wheel.body.Orientation = Quaternion.CreateFromAxisAngle(Vector3.Forward, MathHelper.PiOver2);
+            wheel.diffuse = new Vector3(0, 0, 0);
 
-            //Preventing the occasional pointless collision pair can speed things up.
+            //Prevents collisionf from happening
             CollisionRules.AddRule(wheel.body, baseBody, CollisionRule.NoBroadPhase);
-
-            //Add the wheel and connection to the space.
-            Game1.Instance.Space.Add(wheel.body);
-            Game1.Instance.Children.Add(wheel);
-
-            return wheel.body;
-        }
-
-        Entity AddDriveWheel(Vector3 wheelPosition, Entity boxBase)
-        {
-            var wheel = new BepuEntity();
-            wheel.modelName = "cyl";
-            wheel.LoadContent();
-            wheel.body = new Cylinder(wheelPosition, 2, 2, 2);
-            wheel.localTransform = Matrix.CreateScale(2f, 2f, 2f);
-            wheel.body.Material.KineticFriction = 2.5f;
-            wheel.body.Material.StaticFriction = 2.5f;
-            wheel.body.Orientation = Quaternion.CreateFromAxisAngle(Vector3.Forward, MathHelper.PiOver2);
-
-            //Preventing the occasional pointless collision pair can speed things up.
-            CollisionRules.AddRule(wheel.body, boxBase, CollisionRule.NoBroadPhase);
 
             //Add the wheel and connection to the space.
             Game1.Instance.Space.Add(wheel.body);
@@ -340,12 +290,52 @@ namespace GamesAssignmentMars
             cylinder.localTransform = Matrix.CreateScale(new Vector3(3, 3, 3));
             cylinder.body = new Cylinder(Postion, 3, 3, 3);
             cylinder.diffuse = new Vector3(0.5f, 0.5f, 0.5f);
-            if(Orientation)
+            if(Orientation)//if cylinder needs to be rotated
                 cylinder.body.Orientation = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), MathHelper.PiOver2);
             Game1.Instance.Space.Add(cylinder.body);
             Game1.Instance.Children.Add(cylinder);
 
             return cylinder;
         }
+
+        public Vector3 GetLaserLook()
+        {
+            return roverMovement.laserLook;
+        }
+        public void SetLaserLook(Vector3 value)
+        {
+            roverMovement.laserLook = value;
+        }
+
+        public Vector3 test()
+        {
+            return roverMovement.laserLook;
+        }
+        public void SetCameraLaserContainerXaxisRotation(float value)
+        {
+            roverMovement.cameraLaserContainerXaxisRotation.Motor.Settings.Servo.Goal += value;
+        }
+
+        public void SetbodyCameraCylinderJoint(float value)
+        {
+             roverMovement.bodyCameraCylinderJoint.Motor.Settings.Servo.Goal += value;
+        }
+        public bool IfMaxMovementAngleUp()
+        {
+            if (roverMovement.cameraLaserContainerXaxisRotation.Motor.Settings.Servo.Goal >= -(roverMovement.maximumTurnAngle))
+                return true;
+            else
+                return false;
+        }
+        public bool IfMaxMovementAngleDown()
+        {
+            if (roverMovement.cameraLaserContainerXaxisRotation.Motor.Settings.Servo.Goal <= (roverMovement.maximumTurnAngle))
+                return true;
+            else
+                return false;
+        }
+
+
+
     }
 }

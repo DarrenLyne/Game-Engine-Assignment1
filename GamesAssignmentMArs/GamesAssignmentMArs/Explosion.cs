@@ -11,6 +11,7 @@ namespace GamesAssignmentMars
 {
     class Explosion
     {
+        //code taken from bepu physics demo explosion.cs and adapted for this project
         private readonly List<BroadPhaseEntry> affectedEntries = new List<BroadPhaseEntry>();
 
         public Explosion(Vector3 pos, float explosionMagnitude, float maxDist, Space containingSpace)

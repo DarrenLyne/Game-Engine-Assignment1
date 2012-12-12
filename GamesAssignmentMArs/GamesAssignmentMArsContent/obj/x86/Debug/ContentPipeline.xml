@@ -264,6 +264,24 @@
       <Output>obj\x86\Debug\laser_0.xml</Output>
       <Time>2012-12-04T11:16:32.0702584+00:00</Time>
     </Item>
+    <Item>
+      <Source>lasershot.wav</Source>
+      <Name>lasershot</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\lasershot.xnb</Output>
+      <Time>2012-12-10T22:37:09.2105388+00:00</Time>
+    </Item>
+    <Item>
+      <Source>explosion-01.wav</Source>
+      <Name>explosion-01</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\explosion-01.xnb</Output>
+      <Time>2012-12-12T21:43:23.3517533+00:00</Time>
+    </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <TargetPlatform>Windows</TargetPlatform>

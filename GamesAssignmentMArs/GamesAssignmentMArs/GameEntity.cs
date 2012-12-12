@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace GamesAssignmentMars
 {
+    //Code was in starter code for this assignment
     public abstract class GameEntity
     {
         public string modelName;
@@ -83,7 +84,6 @@ namespace GamesAssignmentMars
         public void pitch(float angle)
         {
             Matrix T = Matrix.CreateFromAxisAngle(right, angle);
-            //_up = Vector3.Transform(_up, T);
             look = Vector3.Transform(look, T);
         }
 
@@ -94,9 +94,7 @@ namespace GamesAssignmentMars
 
         public void strafe(float amount)
         {
-
             pos += right * amount;
-
         }
 
         public float getYaw()

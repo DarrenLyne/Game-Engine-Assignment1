@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace GamesAssignmentMars
 {
+    //Code was in starter code for this assignment
     public class Line
     {
         private static VertexPositionColor[] pointList = new VertexPositionColor[400];

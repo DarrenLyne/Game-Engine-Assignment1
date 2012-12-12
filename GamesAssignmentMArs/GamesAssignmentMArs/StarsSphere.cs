@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
+/* Code taken from XNA-Bepu-Terrain demo provided during the module, not edited */
 namespace GamesAssignmentMars
 {
     class StarsSphere : GameEntity

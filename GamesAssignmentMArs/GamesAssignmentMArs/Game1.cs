@@ -13,9 +13,7 @@ using BEPUphysics.Entities.Prefabs;
 
 namespace GamesAssignmentMars
 {
-    /// <summary>
-    /// This is the main type for your game
-    /// </summary>
+    //Majority of Code was in starter code for this assignment but have added new parts
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         static Game1 instance = null;
@@ -106,12 +104,12 @@ namespace GamesAssignmentMars
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             space = new Space();
-            space.ForceUpdater.Gravity = new Vector3(0, -3.711f, 0);
+            space.ForceUpdater.Gravity = new Vector3(0, -3.711f, 0);//-3.711 is the gravity for mars
 
-            children.Add(new StarsSphere());
-            terrain = new MarsTerrain();
+            children.Add(new StarsSphere());//Create the stars for the sky
+            terrain = new MarsTerrain();//Create the terrain
             children.Add(terrain);
-            rover = new MarsRover();
+            rover = new MarsRover();//Create the rover
             children.Add(rover);
 
             foreach (GameEntity child in children)
@@ -148,6 +146,14 @@ namespace GamesAssignmentMars
             {
                 this.Exit();
             }
+            if(keyState.IsKeyDown(Keys.R))//Suppose to reset game, not working correctly
+            {
+                rover.UnloadContent();
+                children.Remove(rover);
+                rover = new MarsRover();
+                children.Add(rover);
+            }
+
 
             if (mouseState.LeftButton == ButtonState.Pressed & lastFired > 0.25f)
             {
@@ -161,7 +167,6 @@ namespace GamesAssignmentMars
                 children[i].Update(gameTime);
             }
 
-           // cameraCylindar.Position = camera.pos;
             space.Update(timeDelta);
 
             base.Update(gameTime);
@@ -183,7 +188,8 @@ namespace GamesAssignmentMars
                 child.Draw(gameTime);
             }
             // Draw any lines
-            Line.Draw();
+            Line.Draw(); Console.WriteLine(camera.look.X);
+
 
             spriteBatch.End();            
         }
