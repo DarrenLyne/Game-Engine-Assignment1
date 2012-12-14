@@ -7,6 +7,7 @@ Content\cylinder2.xnb
 Content\wheel.xnb
 Content\cyl.xnb
 Content\SphereHighPoly.xnb
+Content\laser.xnb
 Content\Verdana.xnb
 Content\Ground.xnb
 Content\hm1.xnb
@@ -14,6 +15,5 @@ Content\SkySphereTexture.xnb
 Content\mar0kuu2.xnb
 Content\effects.xnb
 Content\SkySphere.xnb
-Content\laser.xnb
 Content\lasershot.xnb
 Content\explosion-01.xnb

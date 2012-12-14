@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace GamesAssignmentMars
 {
-    // Code taken from 2-XNA-Daleks-with-a-Camera demo provided during the module and adapted for this assignment
+    // Code taken from 2-XNA-Daleks-with-a-Camera demo provided during the module and adapted for this assignment, not edited
     class Lazer:GameEntity
     {
         public override void LoadContent()

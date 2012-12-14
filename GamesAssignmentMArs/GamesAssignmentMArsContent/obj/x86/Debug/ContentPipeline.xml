@@ -11,7 +11,7 @@
       <Time>2012-11-20T02:05:16+00:00</Time>
       <Dependency>
         <Key>obj\x86\Debug\cube_0.xml</Key>
-        <Value>2012-11-25T08:57:17.2990306+00:00</Value>
+        <Value>2012-12-13T22:01:02.3927965+00:00</Value>
       </Dependency>
     </Item>
     <Item>
@@ -24,7 +24,7 @@
       <Time>2012-11-13T09:26:50.1997159+00:00</Time>
       <Dependency>
         <Key>obj\x86\Debug\hollowsphere_0.xml</Key>
-        <Value>2012-11-25T08:57:17.6680517+00:00</Value>
+        <Value>2012-12-13T22:01:03.3648521+00:00</Value>
       </Dependency>
     </Item>
     <Item>
@@ -37,7 +37,7 @@
       <Time>2012-11-13T09:26:50.2067163+00:00</Time>
       <Dependency>
         <Key>obj\x86\Debug\oldcube_0.xml</Key>
-        <Value>2012-11-25T08:57:17.9910702+00:00</Value>
+        <Value>2012-12-13T22:01:03.7758756+00:00</Value>
       </Dependency>
     </Item>
     <Item>
@@ -50,7 +50,7 @@
       <Time>2012-11-20T02:05:16+00:00</Time>
       <Dependency>
         <Key>obj\x86\Debug\sphere_0.xml</Key>
-        <Value>2012-11-25T08:57:18.5141001+00:00</Value>
+        <Value>2012-12-13T22:01:04.3049059+00:00</Value>
       </Dependency>
     </Item>
     <Item>
@@ -63,7 +63,7 @@
       <Time>2012-11-23T18:46:26.3423084+00:00</Time>
       <Dependency>
         <Key>obj\x86\Debug\cylinder_0.xml</Key>
-        <Value>2012-11-25T08:57:19.3751493+00:00</Value>
+        <Value>2012-12-13T22:01:05.2559603+00:00</Value>
       </Dependency>
     </Item>
     <Item>
@@ -76,7 +76,7 @@
       <Time>2012-11-23T19:44:23.7102025+00:00</Time>
       <Dependency>
         <Key>obj\x86\Debug\cylinder2_0.xml</Key>
-        <Value>2012-11-25T08:57:19.7441704+00:00</Value>
+        <Value>2012-12-13T22:01:05.6649837+00:00</Value>
       </Dependency>
     </Item>
     <Item>
@@ -89,7 +89,7 @@
       <Time>2012-11-23T21:52:00.6381537+00:00</Time>
       <Dependency>
         <Key>obj\x86\Debug\wheel_0.xml</Key>
-        <Value>2012-11-25T08:57:20.0621886+00:00</Value>
+        <Value>2012-12-13T22:01:06.0960083+00:00</Value>
       </Dependency>
     </Item>
     <Item>
@@ -102,7 +102,7 @@
       <Time>2011-11-21T19:33:46+00:00</Time>
       <Dependency>
         <Key>obj\x86\Debug\cyl_0.xml</Key>
-        <Value>2012-11-25T08:57:20.3722064+00:00</Value>
+        <Value>2012-12-13T22:01:06.47503+00:00</Value>
       </Dependency>
     </Item>
     <Item>
@@ -115,7 +115,20 @@
       <Time>2012-11-20T02:05:16+00:00</Time>
       <Dependency>
         <Key>obj\x86\Debug\SphereHighPoly_0.xml</Key>
-        <Value>2012-11-25T08:57:21.2252551+00:00</Value>
+        <Value>2012-12-13T22:01:07.2550746+00:00</Value>
+      </Dependency>
+    </Item>
+    <Item>
+      <Source>laser.fbx</Source>
+      <Name>laser</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\laser.xnb</Output>
+      <Time>2012-12-04T11:16:32.0702584+00:00</Time>
+      <Dependency>
+        <Key>obj\x86\Debug\laser_0.xml</Key>
+        <Value>2012-12-13T22:01:07.8191069+00:00</Value>
       </Dependency>
     </Item>
     <Item>
@@ -161,7 +174,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\mar0kuu2.xnb</Output>
-      <Time>2012-12-05T23:02:54.3174873+00:00</Time>
+      <Time>2012-12-13T23:53:49.6648623+00:00</Time>
     </Item>
     <Item>
       <Source>effects.fx</Source>
@@ -180,6 +193,24 @@
       <Options>None</Options>
       <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\SkySphere.xnb</Output>
       <Time>2012-11-20T02:05:16+00:00</Time>
+    </Item>
+    <Item>
+      <Source>lasershot.wav</Source>
+      <Name>lasershot</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\lasershot.xnb</Output>
+      <Time>2012-12-10T22:37:09.2105388+00:00</Time>
+    </Item>
+    <Item>
+      <Source>explosion-01.wav</Source>
+      <Name>explosion-01</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\explosion-01.xnb</Output>
+      <Time>2012-12-12T21:43:23.3517533+00:00</Time>
     </Item>
     <Item>
       <Source>cube.fbx</Source>
@@ -246,41 +277,10 @@
     </Item>
     <Item>
       <Source>laser.fbx</Source>
-      <Name>laser</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\laser.xnb</Output>
-      <Time>2012-12-04T11:16:32.0702584+00:00</Time>
-      <Dependency>
-        <Key>obj\x86\Debug\laser_0.xml</Key>
-        <Value>2012-12-04T11:16:38.5036264+00:00</Value>
-      </Dependency>
-    </Item>
-    <Item>
-      <Source>laser.fbx</Source>
       <Importer>FbxImporter</Importer>
       <Options>IntermediateFile, DontCacheImportedData</Options>
       <Output>obj\x86\Debug\laser_0.xml</Output>
       <Time>2012-12-04T11:16:32.0702584+00:00</Time>
-    </Item>
-    <Item>
-      <Source>lasershot.wav</Source>
-      <Name>lasershot</Name>
-      <Importer>WavImporter</Importer>
-      <Processor>SoundEffectProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\lasershot.xnb</Output>
-      <Time>2012-12-10T22:37:09.2105388+00:00</Time>
-    </Item>
-    <Item>
-      <Source>explosion-01.wav</Source>
-      <Name>explosion-01</Name>
-      <Importer>WavImporter</Importer>
-      <Processor>SoundEffectProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Darren\Desktop\College\GIT\Game-Engine-Assignment1\GamesAssignmentMArs\GamesAssignmentMArs\bin\x86\Debug\Content\explosion-01.xnb</Output>
-      <Time>2012-12-12T21:43:23.3517533+00:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>

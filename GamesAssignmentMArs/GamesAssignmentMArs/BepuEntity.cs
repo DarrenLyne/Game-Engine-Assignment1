@@ -6,7 +6,7 @@ using BEPUphysics.NarrowPhaseSystems.Pairs;
 using Microsoft.Xna.Framework.Audio;
 namespace GamesAssignmentMars
 {
-    //Code was in starter code for this assignment
+    //Code was in starter code for this assignment, not edited
     public class  BepuEntity : GameEntity
     {
 

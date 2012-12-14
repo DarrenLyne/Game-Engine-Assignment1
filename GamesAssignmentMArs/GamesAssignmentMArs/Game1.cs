@@ -25,8 +25,8 @@ namespace GamesAssignmentMars
         SpriteBatch spriteBatch;
         private Camera camera;
         List<GameEntity> children = new List<GameEntity>();
-        MarsRover rover;
-        MarsTerrain terrain;
+        MarsRover rover;//added
+        MarsTerrain terrain;//added
 
         public Space Space
         {
@@ -58,13 +58,13 @@ namespace GamesAssignmentMars
             set { Game1.instance = value; }
         }
 
-        public MarsRover Rover
+        public MarsRover Rover//added
         {
             get { return rover; }
             set { rover = value; }
         }
 
-        public MarsTerrain Terrain
+        public MarsTerrain Terrain//added
         {
             get { return terrain; }
             set { terrain = value; }
@@ -104,12 +104,12 @@ namespace GamesAssignmentMars
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             space = new Space();
-            space.ForceUpdater.Gravity = new Vector3(0, -3.711f, 0);//-3.711 is the gravity for mars
+            space.ForceUpdater.Gravity = new Vector3(0, -3.711f, 0);//-3.711 is the gravity for mars,changed this
 
-            children.Add(new StarsSphere());//Create the stars for the sky
-            terrain = new MarsTerrain();//Create the terrain
+            children.Add(new StarsSphere());//Create the stars for the sky,added myself
+            terrain = new MarsTerrain();//Create the terrain,added myself
             children.Add(terrain);
-            rover = new MarsRover();//Create the rover
+            rover = new MarsRover();//Create the rover,added myself
             children.Add(rover);
 
             foreach (GameEntity child in children)
@@ -146,7 +146,7 @@ namespace GamesAssignmentMars
             {
                 this.Exit();
             }
-            if(keyState.IsKeyDown(Keys.R))//Suppose to reset game, not working correctly
+            if(keyState.IsKeyDown(Keys.R))//Suppose to reset game, not working correctly,added myself
             {
                 rover.UnloadContent();
                 children.Remove(rover);
@@ -188,7 +188,7 @@ namespace GamesAssignmentMars
                 child.Draw(gameTime);
             }
             // Draw any lines
-            Line.Draw(); Console.WriteLine(camera.look.X);
+            Line.Draw();
 
 
             spriteBatch.End();            

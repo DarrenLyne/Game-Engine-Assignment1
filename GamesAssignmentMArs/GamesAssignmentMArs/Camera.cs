@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace GamesAssignmentMars
 {
+    //In starter code, but parts added to it
     public class Camera : GameEntity
     {
         public Matrix projection;
@@ -41,10 +42,10 @@ namespace GamesAssignmentMars
         public override void Update(GameTime gameTime)
         {
             float timeDelta = (float)(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
-
+        
             keyboardState = Keyboard.GetState();
             mouseState = Mouse.GetState();
-            if (!isRoverCamera)
+            if (!isRoverCamera) // added this if staerment and all the code in the else statement
             {
                 int mouseX = mouseState.X;
                 int mouseY = mouseState.Y;
@@ -96,25 +97,30 @@ namespace GamesAssignmentMars
             }
             else
             {
+                
                 if (keyboardState.IsKeyDown(Keys.W))
                 {
+                    //move rover camera up
                     if (Game1.Instance.Rover.IfMaxMovementAngleUp())
                         RotateAroundXAxis(-0.01f);
                 }
 
                 if (keyboardState.IsKeyDown(Keys.S))
                 {
+                    //move rover camera down
                     if (Game1.Instance.Rover.IfMaxMovementAngleDown())
                         RotateAroundXAxis(0.01f);
                 }
 
                 if (keyboardState.IsKeyDown(Keys.A))
                 {
+                    //move rover camera left
                     RotateAroundYAxis(0.01f);
                 }
 
                 if (keyboardState.IsKeyDown(Keys.D))
                 {
+                    //move rover camera right
                     RotateAroundYAxis(-0.01f);
                 }
             }
@@ -124,6 +130,7 @@ namespace GamesAssignmentMars
 
         }
 
+        //coded myself
         public void RotateAroundXAxis(float angle)
         {
             Game1.Instance.Rover.SetCameraLaserContainerXaxisRotation(1 * angle);
@@ -131,6 +138,7 @@ namespace GamesAssignmentMars
             SetLaserAndCamera(T);
         }
 
+        //coded myself
         public void RotateAroundYAxis(float angle)
         {
             Game1.Instance.Rover.SetbodyCameraCylinderJoint(1 * angle);
@@ -138,8 +146,10 @@ namespace GamesAssignmentMars
             SetLaserAndCamera(T);
         }
 
+        //coded myself
         private void SetLaserAndCamera(Matrix T)
         {
+            //Set the camera and laser look and position
             Game1.Instance.Rover.SetLaserLook(Vector3.Transform(Game1.Instance.Rover.GetLaserLook(), T));
             look = Vector3.Transform(Game1.Instance.Rover.GetLaserLook(), T);
             pos = Game1.Instance.Rover.cameraLaserContainer.body.Position + (Game1.Instance.Rover.GetLaserLook() * 3);

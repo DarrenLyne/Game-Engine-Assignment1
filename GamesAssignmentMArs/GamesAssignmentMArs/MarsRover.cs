@@ -1,26 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
-using BEPUphysics.Entities.Prefabs;
 using BEPUphysics.Constraints.SolverGroups;
 using BEPUphysics.Constraints.TwoEntity.Motors;
 using Microsoft.Xna.Framework.Input;
 using BEPUphysics.CollisionRuleManagement;
 using BEPUphysics.Constraints.TwoEntity.Joints;
-using BEPUphysics.Constraints.TwoEntity.JointLimits;
 using BEPUphysics.Entities;
-using BEPUphysics.DeactivationManagement;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Media;
 
 namespace GamesAssignmentMars
 {
+    //created this class and the code myself
     public class MarsRover: BepuEntity
     {
         public BepuEntity cameraLaserContainer;//camera & laser container
-        BepuEntity roverBody;//base body for mars rover
+        BepuEntity roverBase;//base body for mars rover
         BepuEntity cameraArm;//cylinder that camera & laser wil be on top of
         BepuEntity drillArm;//cylinder that willhold the drill
 
@@ -29,10 +24,10 @@ namespace GamesAssignmentMars
         float fireRate = 1.0f;
         float elapsed = 1000.0f; // Set this to a high number so it lets me start firing straight away...
         public bool exploded = false;// holds the state of if the rover has exploded or not5
-        MarsRoverMovement roverMovement = new MarsRoverMovement();
+        MarsRoverMovement roverMovement = new MarsRoverMovement();// creates the aspects of the rovers movement
+        MarsRoverBody marsRoverBody = new MarsRoverBody();//Creates the body of the mars rover
         private SoundEffect laserShot;
         private SoundEffect explosionSound;
-
 
         public MarsRover(): base()
         {
@@ -42,51 +37,42 @@ namespace GamesAssignmentMars
             drillArm = new BepuEntity();
 
             //construct mars rover ase body
-            roverBody = new BepuEntity();
-            roverBody.modelName = "cube";
-            roverBody.LoadContent();
-            roverBody.localTransform = Matrix.CreateScale(new Vector3(15, 5, 20));
-            roverBody.body = new Box(new Vector3(260, 45, -260), 15, 5, 20);
-            roverBody.body.BecomeDynamic(100);
-            roverBody.body.CollisionInformation.LocalPosition = new Vector3(0, .8f, 0);
-            roverBody.diffuse = new Vector3(0.5f, 0.5f, 0.5f);
-            Game1.Instance.Space.Add(roverBody.body);
-            Game1.Instance.Children.Add(roverBody);
+            roverBase = marsRoverBody.AddBox(new Vector3(260, 45, -260));
 
             //create arms to hold both drill and camera/laser
-            drillArm = AddCylinder("cylinder",new Vector3(267, 44, -244), false);
-            cameraArm = AddCylinder("cylinder",new Vector3(254, 54, -252), true);
+            drillArm = marsRoverBody.AddCylinder("cylinder", new Vector3(267, 44, -244), false);
+            cameraArm = marsRoverBody.AddCylinder("cylinder", new Vector3(254, 54, -252), true);
 
             //Create joint between rover body and drill arm
-            roverMovement.CreateRevoluteJoint(out roverMovement.bodyDrillJoint, roverBody, drillArm, new Vector3(267, 44, -250), 3500, Vector3.Right);
+            roverMovement.CreateRevoluteJoint(out roverMovement.bodyDrillJoint, roverBase, drillArm, new Vector3(267, 44, -250), 3500, Vector3.Right);
             roverMovement.roverJoints.Add(roverMovement.bodyDrillJoint);
 
             //Create joint between rover body and camera/laser arm
-            roverMovement.CreateRevoluteJoint(out roverMovement.bodyCameraCylinderJoint, roverBody, cameraArm, cameraArm.body.Position, 1500, Vector3.Up);
+            roverMovement.CreateRevoluteJoint(out roverMovement.bodyCameraCylinderJoint, roverBase, cameraArm, cameraArm.body.Position, 1500, Vector3.Up);
             roverMovement.roverJoints.Add(roverMovement.bodyCameraCylinderJoint);
 
             //create container for camera/laser
-            cameraLaserContainer=AddCylinder("cube",new Vector3(254, 61, -252), true);
+            cameraLaserContainer = marsRoverBody.AddCylinder("cube", new Vector3(254, 61, -252), true);
 
             //Create joint between camera/laser arm and container for camera/laser
             roverMovement.CreateRevoluteJoint(out roverMovement.cameraLaserContainerXaxisRotation, cameraArm, cameraLaserContainer, cameraLaserContainer.body.Position, 2500, -Vector3.Right);
             roverMovement.roverJoints.Add(roverMovement.cameraLaserContainerXaxisRotation);
 
             //create the four back wheels of the rover and connect them to the body
-            Entity backWheel1 = AddWheel(new Vector3(250, 42, -267), roverBody.body);
-            roverMovement.ConnectWheelBody(backWheel1, roverBody);
-            Entity backWheel2 = AddWheel(new Vector3(270, 42, -267), roverBody.body);
-            roverMovement.ConnectWheelBody(backWheel2, roverBody);
-            Entity backWheel3 = AddWheel(new Vector3(250, 42, -260), roverBody.body);
-            roverMovement.ConnectWheelBody(backWheel3,roverBody);
-            Entity backWheel4 = AddWheel(new Vector3(270, 42, -260), roverBody.body);
-            roverMovement.ConnectWheelBody(backWheel4, roverBody);
+            Entity backWheel1 = marsRoverBody.AddWheel(new Vector3(250, 42, -267), roverBase.body);
+            roverMovement.ConnectWheelBody(backWheel1, roverBase);
+            Entity backWheel2 = marsRoverBody.AddWheel(new Vector3(270, 42, -267), roverBase.body);
+            roverMovement.ConnectWheelBody(backWheel2, roverBase);
+            Entity backWheel3 = marsRoverBody.AddWheel(new Vector3(250, 42, -260), roverBase.body);
+            roverMovement.ConnectWheelBody(backWheel3, roverBase);
+            Entity backWheel4 = marsRoverBody.AddWheel(new Vector3(270, 42, -260), roverBase.body);
+            roverMovement.ConnectWheelBody(backWheel4, roverBase);
 
             //Create the two driving wheels and connect them to the body
-            var wheel1 = AddWheel(new Vector3(270, 42, -255), roverBody.body);
-            roverMovement.SetUpFrontMotorWheels(roverBody,wheel1, out roverMovement.drivingMotor1, out roverMovement.steeringMotor1);
-            var wheel2 = AddWheel(new Vector3(250, 42, -255), roverBody.body);
-            roverMovement.SetUpFrontMotorWheels(roverBody,wheel2, out roverMovement.drivingMotor2, out roverMovement.steeringMotor2);
+            var wheel1 = marsRoverBody.AddWheel(new Vector3(270, 42, -255), roverBase.body);
+            roverMovement.SetUpFrontMotorWheels(roverBase, wheel1, out roverMovement.drivingMotor1, out roverMovement.steeringMotor1);
+            var wheel2 = marsRoverBody.AddWheel(new Vector3(250, 42, -255), roverBase.body);
+            roverMovement.SetUpFrontMotorWheels(roverBase, wheel2, out roverMovement.drivingMotor2, out roverMovement.steeringMotor2);
 
             var steeringStabilizer = new RevoluteAngularJoint(wheel1, wheel2, Vector3.Right);
             Game1.Instance.Space.Add(steeringStabilizer);
@@ -104,11 +90,13 @@ namespace GamesAssignmentMars
             {
                 if (keyState.IsKeyDown(Keys.B))
                 {
-                    roverMovement.RotationCameraLaserYAxis(-0.01f);
+                    //turn the container for camera laser left
+                    roverMovement.RotationCameraLaserYAxis(0.01f);
                 }
                 if (keyState.IsKeyDown(Keys.M))
                 {
-                    roverMovement.RotationCameraLaserYAxis(0.01f);
+                    //turn the container for camera laser right
+                    roverMovement.RotationCameraLaserYAxis(-0.01f);
                 }
                 if (keyState.IsKeyDown(Keys.H))
                 {
@@ -131,11 +119,12 @@ namespace GamesAssignmentMars
             if(keyState.IsKeyDown(Keys.F))
             {
                 //the drill cylinder looks up
-                roverMovement.bodyDrillJoint.Motor.Settings.Servo.Goal -= 1 * 0.01f;
+                SetDrillOrientation(-0.01f);
             }
             if (keyState.IsKeyDown(Keys.V))
-            {   //the drill cylinder looks down
-                roverMovement.bodyDrillJoint.Motor.Settings.Servo.Goal += 1 * 0.01f;
+            { 
+                //the drill cylinder looks down
+                SetDrillOrientation(0.01f);
             }
 
             if(keyState.IsKeyDown(Keys.Space))
@@ -158,8 +147,7 @@ namespace GamesAssignmentMars
                 roverMovement.MoveForwardBackward(-driveSpeed);
                 if (Game1.Instance.Camera.isRoverCamera)
                 {
-                    Game1.Instance.Camera.look = GetLaserLook();
-                    Game1.Instance.Camera.pos = new Vector3(cameraLaserContainer.body.Position.X, cameraLaserContainer.body.Position.Y, cameraLaserContainer.body.Position.Z) + (GetLaserLook() * 3);
+                    SetRoverCamera(0);
                 }
             }
             else if (keyState.IsKeyDown(Keys.Up))
@@ -168,8 +156,7 @@ namespace GamesAssignmentMars
                 roverMovement.MoveForwardBackward(driveSpeed);
                 if (Game1.Instance.Camera.isRoverCamera)
                 {
-                    Game1.Instance.Camera.look = GetLaserLook();
-                    Game1.Instance.Camera.pos = new Vector3(cameraLaserContainer.body.Position.X, cameraLaserContainer.body.Position.Y, cameraLaserContainer.body.Position.Z) + (GetLaserLook() * 3);
+                    SetRoverCamera(0);
                 }
             }
             else
@@ -184,9 +171,7 @@ namespace GamesAssignmentMars
                 roverMovement.TurnLeftRight(maximumTurnAngle);
                 if (Game1.Instance.Camera.isRoverCamera)
                 {
-                    Game1.Instance.Camera.RotateAroundYAxis(0.01f);
-                    Game1.Instance.Camera.look = GetLaserLook();
-                    Game1.Instance.Camera.pos = new Vector3(cameraLaserContainer.body.Position.X, cameraLaserContainer.body.Position.Y, cameraLaserContainer.body.Position.Z) + (GetLaserLook() * 3);
+                    SetRoverCamera(0.01f);
                 }
             }
             else if (keyState.IsKeyDown(Keys.Right))
@@ -195,9 +180,7 @@ namespace GamesAssignmentMars
                 roverMovement.TurnLeftRight(-maximumTurnAngle);
                 if (Game1.Instance.Camera.isRoverCamera)
                 {
-                    Game1.Instance.Camera.RotateAroundYAxis(-0.01f);
-                    Game1.Instance.Camera.look = GetLaserLook();
-                    Game1.Instance.Camera.pos = new Vector3(cameraLaserContainer.body.Position.X, cameraLaserContainer.body.Position.Y, cameraLaserContainer.body.Position.Z) + (GetLaserLook() * 3);
+                    SetRoverCamera(-0.01f);
                 }
             }
             else
@@ -215,21 +198,17 @@ namespace GamesAssignmentMars
                     if (Game1.Instance.Camera.isRoverCamera == false)
                     {
                         //set look vector and position of camera and if it is rover camera, changes controls if it is
-                        Game1.Instance.Camera.look = GetLaserLook();
-                        Game1.Instance.Camera.pos = new Vector3(cameraLaserContainer.body.Position.X, cameraLaserContainer.body.Position.Y, cameraLaserContainer.body.Position.Z) + (GetLaserLook() * 3);
-                        Game1.Instance.Camera.isRoverCamera = true;
+                        ChangeCameraBeingUsed(GetCameraRoverPosition(), GetLaserLook(), true);
                     }
                     else
                     {
                         //put camera back to normal
-                        Game1.Instance.Camera.pos = new Vector3(248, 64, -200);
-                        Game1.Instance.Camera.look = new Vector3(0.0f, 0.0f, -1.0f);
-                        Game1.Instance.Camera.isRoverCamera = false;
+                        ChangeCameraBeingUsed(new Vector3(248, 64, -200), new Vector3(0.0f, 0.0f, -1.0f),false);
                     }
                     elapsed = 0.0f;
                 }
             }
-            elapsed += (float) gameTime.ElapsedGameTime.TotalSeconds;
+            elapsed += (float) gameTime.ElapsedGameTime.TotalSeconds;//used so cant chnge between normal camera and rover camera too quickly
             if (elapsed >= 25.0f)
             {
                 elapsed = 25.0f;
@@ -239,8 +218,8 @@ namespace GamesAssignmentMars
                 //set the rover to explode
                 if (!exploded)
                 {
-                    Explosion createExplosion = new Explosion(Vector3.Zero, 4000, 30, Game1.Instance.Space);
-                    createExplosion.Position = roverBody.body.Position;
+                    Explosion createExplosion = new Explosion(Vector3.Zero, 2000, 30, Game1.Instance.Space);
+                    createExplosion.Position = roverBase.body.Position;
 
                     //disable all the joints
                     foreach (RevoluteJoint joint in roverMovement.roverJoints)
@@ -261,43 +240,29 @@ namespace GamesAssignmentMars
 
         }
 
-        Entity AddWheel(Vector3 wheelPosition,Entity baseBody)
+        private Vector3 GetCameraRoverPosition()
         {
-            var wheel = new BepuEntity();
-            wheel.modelName = "cyl";
-            wheel.LoadContent();
-            wheel.body = new Cylinder(wheelPosition, 2, 2, 2);
-            wheel.localTransform = Matrix.CreateScale(2f, 2f, 2f);
-            wheel.body.Material.KineticFriction = 2.5f;
-            wheel.body.Material.StaticFriction = 2.5f;
-            wheel.body.Orientation = Quaternion.CreateFromAxisAngle(Vector3.Forward, MathHelper.PiOver2);
-            wheel.diffuse = new Vector3(0, 0, 0);
-
-            //Prevents collisionf from happening
-            CollisionRules.AddRule(wheel.body, baseBody, CollisionRule.NoBroadPhase);
-
-            //Add the wheel and connection to the space.
-            Game1.Instance.Space.Add(wheel.body);
-            Game1.Instance.Children.Add(wheel);
-
-            return wheel.body;
+            return cameraLaserContainer.body.Position + (GetLaserLook() * 3);
         }
 
-        BepuEntity AddCylinder(string modelName,Vector3 Postion, bool Orientation)
+        private static void ChangeCameraBeingUsed(Vector3 postion,Vector3 look, bool isRoverCamera)
         {
-            BepuEntity cylinder= new BepuEntity();
-            cylinder.modelName = modelName;
-            cylinder.localTransform = Matrix.CreateScale(new Vector3(3, 3, 3));
-            cylinder.body = new Cylinder(Postion, 3, 3, 3);
-            cylinder.diffuse = new Vector3(0.5f, 0.5f, 0.5f);
-            if(Orientation)//if cylinder needs to be rotated
-                cylinder.body.Orientation = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), MathHelper.PiOver2);
-            Game1.Instance.Space.Add(cylinder.body);
-            Game1.Instance.Children.Add(cylinder);
-
-            return cylinder;
+            Game1.Instance.Camera.pos = postion;
+            Game1.Instance.Camera.look = look;
+            Game1.Instance.Camera.isRoverCamera = isRoverCamera;
         }
 
+        private void SetRoverCamera(float angle)
+        {
+            Game1.Instance.Camera.RotateAroundYAxis(angle);
+            Game1.Instance.Camera.look = GetLaserLook();
+            Game1.Instance.Camera.pos = GetCameraRoverPosition();
+        }
+
+        private void SetDrillOrientation(float angle)
+        {
+            roverMovement.bodyDrillJoint.Motor.Settings.Servo.Goal += 1 * angle;
+        }
         public Vector3 GetLaserLook()
         {
             return roverMovement.laserLook;
@@ -307,10 +272,6 @@ namespace GamesAssignmentMars
             roverMovement.laserLook = value;
         }
 
-        public Vector3 test()
-        {
-            return roverMovement.laserLook;
-        }
         public void SetCameraLaserContainerXaxisRotation(float value)
         {
             roverMovement.cameraLaserContainerXaxisRotation.Motor.Settings.Servo.Goal += value;
@@ -334,8 +295,5 @@ namespace GamesAssignmentMars
             else
                 return false;
         }
-
-
-
     }
 }

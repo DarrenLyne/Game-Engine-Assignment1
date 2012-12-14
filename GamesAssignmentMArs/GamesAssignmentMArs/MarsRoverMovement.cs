@@ -11,6 +11,7 @@ using BEPUphysics.Constraints.TwoEntity.JointLimits;
 
 namespace GamesAssignmentMars
 {
+    //my own class and parts of code, other parts are from bepu demos
     public class MarsRoverMovement
     {
         public RevoluteJoint bodyCameraCylinderJoint;//joint between the rover body and the cylinder that camera & laser stands on
@@ -79,7 +80,7 @@ namespace GamesAssignmentMars
             Game1.Instance.Space.Add(steeringMotor);
             Game1.Instance.Space.Add(steeringConstraint);
 
-            //add joints to lists of joints for explosion
+            //my own code ,add joints to lists of joints for explosion
             joints.Add(pointOnLineJoint);
             joints.Add(suspensionLimit);
             joints.Add(swivelHingeAngularJoint);
@@ -100,7 +101,7 @@ namespace GamesAssignmentMars
             Game1.Instance.Space.Add(suspensionLimit);
             Game1.Instance.Space.Add(revoluteAngularJoint);
 
-            //add joints to lists of joints for explosion
+            //my own code ,add joints to lists of joints for explosionn
             joints.Add(pointOnLineJoint);
             joints.Add(suspensionLimit);
             joints.Add(revoluteAngularJoint);
@@ -116,7 +117,8 @@ namespace GamesAssignmentMars
             suspensionSpring.Settings.Servo.SpringSettings.StiffnessConstant = 300;
             suspensionSpring.Settings.Servo.SpringSettings.DampingConstant = 70;
             Game1.Instance.Space.Add(suspensionSpring);
-            //add joints to lists of joints for explosion
+
+            //my own code ,add joints to lists of joints for explosion
             suspensionSprings.Add(suspensionSpring);
         }
 
@@ -150,6 +152,4 @@ namespace GamesAssignmentMars
         }
 
     }
-
-
 }
